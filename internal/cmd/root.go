@@ -5,25 +5,26 @@ package cmd
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"os"
 	"runtime/debug"
 
 	"github.com/CervinoB/scannercli/cmd/state"
 	"github.com/CervinoB/scannercli/lib/consts"
-	tea "github.com/charmbracelet/bubbletea"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 type rootCommand struct {
-	debug       bool
-	cmd         *cobra.Command
-	globalState *state.GlobalState
+	cmd *cobra.Command
+	gs  *state.GlobalState
 }
 
 func newRootCommand(gs *state.GlobalState) *rootCommand {
 	c := &rootCommand{
-		globalState: gs,
+		gs: gs,
 	}
 
 	// the base command when called without any subcommands.
@@ -34,14 +35,14 @@ func newRootCommand(gs *state.GlobalState) *rootCommand {
 	a coleta de métricas de code smell ao longo do tempo` + "\n" + consts.Banner(),
 		PersistentPreRunE: c.persistentPreRunE,
 		Version:           versionString(),
+		Example:           "scannercli scan",
 	}
 
 	rootCmd.SetVersionTemplate(
 		`{{with .Name}}{{printf "%s " .}}{{end}}{{printf "v%s\n" .Version}}`,
 	)
-	rootCmd.PersistentFlags().BoolVar(&c.debug, "debug", false, "enable debug mode")
-	rootCmd.PersistentFlags().StringVar(&c.globalState.CfgFile, "config", "", "config file (default is $HOME/.scannercli.yaml)")
-	rootCmd.PersistentFlags().BoolVar(&c.globalState.Docker, "docker", false, "run scanners in docker containers")
+	rootCmd.PersistentFlags().StringVar(&c.gs.CfgFile, "config", "", "config file (default is $HOME/.scannercli.yaml)")
+	rootCmd.PersistentFlags().BoolVar(&c.gs.Docker, "docker", false, "run scanners in docker containers")
 
 	subCommands := []func(*state.GlobalState) *cobra.Command{getCmdVersion, getCmdScan}
 
@@ -55,24 +56,25 @@ func newRootCommand(gs *state.GlobalState) *rootCommand {
 
 func (c *rootCommand) persistentPreRunE(_ *cobra.Command, _ []string) error {
 	c.initLogger()
-	c.globalState.Logger.Debugf("scannercli version: v%s", fullVersion())
+
+	c.gs.Logger.Debugf("scannercli version: v%s", fullVersion())
 	return nil
 }
 
 func (c *rootCommand) execute() {
-	ctx, cancel := context.WithCancel(c.globalState.Ctx)
-	c.globalState.Ctx = ctx
+	ctx, cancel := context.WithCancel(c.gs.Ctx)
+	c.gs.Ctx = ctx
 
 	exitCode := -1
 	defer func() {
 		cancel()
-		c.globalState.OSExit(exitCode)
+		c.gs.OSExit(exitCode)
 	}()
 
 	defer func() {
 		if r := recover(); r != nil {
 			err := fmt.Errorf("unexpected scannercli panic: %s\n%s", r, debug.Stack())
-			c.globalState.Logger.Error(err)
+			c.gs.Logger.Error(err)
 		}
 	}()
 
@@ -82,18 +84,48 @@ func (c *rootCommand) execute() {
 		return
 	}
 
-	CheckIfError(c.globalState, err)
+	CheckIfError(c.gs, err)
 }
 
 func Execute() {
 	gs := state.NewState(context.Background())
-	p := tea.NewProgram(newRootCommand(gs))
+	// p := tea.NewProgram() //TODO: newRootCommand(gs) -> initialModel()
 	newRootCommand(gs).execute()
 }
 
-func (c *rootCommand) initLogger() {
-	if c.debug {
-		c.globalState.Logger.SetLevel(logrus.DebugLevel)
-		c.globalState.Logger.Debug("Debug mode enabled")
+func (c *rootCommand) initConfig() {
+	if c.gs.CfgFile != "" {
+		// Use config file from the flag.
+		viper.SetConfigFile(c.gs.CfgFile)
+	} else {
+		// Find home directory.
+		home, err := os.UserHomeDir()
+		cobra.CheckErr(err)
+
+		// Search config in home directory with name ".cobra" (without extension).
+		viper.AddConfigPath(home)
+		viper.SetConfigType("yaml")
+		viper.SetConfigName(".cobra")
 	}
+
+	viper.AutomaticEnv()
+
+	err := viper.ReadInConfig()
+
+	notFound := &viper.ConfigFileNotFoundError{}
+	switch {
+	case err != nil && !errors.As(err, notFound):
+		cobra.CheckErr(err)
+	case err != nil && errors.As(err, notFound):
+		// The config file is optional, we shouldn't exit when the config is not found
+		break
+	default:
+		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
+	}
+}
+
+func (c *rootCommand) initLogger() {
+	c.gs.Logger.SetLevel(logrus.DebugLevel)
+	c.gs.Logger.Debug("Debug mode enabled")
+	c.gs.Logger.SetLevel(logrus.InfoLevel)
 }

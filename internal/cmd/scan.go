@@ -5,6 +5,7 @@ package cmd
 
 import (
 	"github.com/CervinoB/scannercli/cmd/state"
+	"github.com/CervinoB/scannercli/internal/ui"
 	"github.com/CervinoB/scannercli/internal/ui/pb"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -17,6 +18,10 @@ type scanCmd struct {
 func (c *scanCmd) run(cmd *cobra.Command, args []string) error {
 	var l logrus.FieldLogger = c.gs.Logger
 	printBanner(c.gs)
+
+	l.Info("============= Chose scanner to use =============")
+	ui.New()
+
 	initBar := pb.New(pb.WithConstLeft("Init"))
 	l.Info("Starting repository scan...")
 
