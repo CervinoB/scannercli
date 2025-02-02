@@ -70,14 +70,13 @@ func getCmdScan(gs *state.GlobalState) *cobra.Command {
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-		Args: exactArgsWithMsg(1, "Repository URL to scan"),
+		// Args: exactArgsWithMsg(1, "Repository URL to scan"),
 		RunE: s.run,
 	}
 
 	scanCmd.Flags().StringP("repo", "t", "", "Repository URL to scan")
 	scanCmd.Flags().StringP("commit", "c", "HEAD", "Commit hash or tag to analyze")
 	scanCmd.Flags().StringP("scanner", "s", "", "Scanner to use (sonarqube, eslint, etc.)")
-	scanCmd.Flags().StringP("config", "f", "", "Configuration file to use")
 
 	// rootCmd.AddCommand(scanCmd)
 	return scanCmd

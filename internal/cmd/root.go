@@ -10,6 +10,7 @@ import (
 
 	"github.com/CervinoB/scannercli/cmd/state"
 	"github.com/CervinoB/scannercli/lib/consts"
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -86,6 +87,7 @@ func (c *rootCommand) execute() {
 
 func Execute() {
 	gs := state.NewState(context.Background())
+	p := tea.NewProgram(newRootCommand(gs))
 	newRootCommand(gs).execute()
 }
 

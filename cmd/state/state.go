@@ -26,6 +26,6 @@ func NewState(ctx context.Context) *GlobalState {
 		Docker:  false,
 		Logger:  logger,
 		OSExit:  os.Exit,
-		CfgFile: "",
+		CfgFile: "./scannercli.yaml",
 	}
 }
