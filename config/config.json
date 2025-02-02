@@ -1,0 +1,8 @@
+{
+  "sonarUrl": "http://localhost:9000",
+  "projectKey": "Test",
+  "authToken": "sqa_9d87f7e834accb935cfafdc9a8881ebb4dc0e149",
+  "twentyRepoURL": "https://github.com/twentyhq/twenty.git",
+  "twentyRepoPath": "./repo/twenty",
+  "tags": ["v0.33.3", "v0.33.2", "v0.33.1", "v0.33.0"] 
+}

@@ -1,5 +1,12 @@
-FROM golang:1.20
+FROM golang:1.20-alpine
+
 WORKDIR /app
-COPY . .
-RUN go build -o sonarcli .
-ENTRYPOINT ["./sonarcli"]
+
+COPY main.go ./
+RUN go run main.go
+
+# COPY . .
+
+# RUN go build -o exporter .
+
+# CMD ["./exporter"]
