@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/CervinoB/sonarcli/lib/consts"
+	"github.com/CervinoB/sonarcli/lib/state"
 	"github.com/fatih/color"
-	"go.k6.io/k6/cmd/state"
-	"go.k6.io/k6/lib/consts"
 	"go.k6.io/k6/ui/pb"
 )
 

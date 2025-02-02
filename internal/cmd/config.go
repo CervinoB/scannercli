@@ -33,7 +33,7 @@ var showConfigCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(configCmd)
+	// rootCmd.AddCommand(configCmd)
 	configCmd.AddCommand(showConfigCmd)
 
 	// Here you will define your flags and configuration settings.

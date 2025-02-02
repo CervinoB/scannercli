@@ -1,4 +1,4 @@
-module sonarcli
+module github.com/CervinoB/sonarcli
 
 go 1.23.5
 

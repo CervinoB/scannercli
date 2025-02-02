@@ -28,11 +28,11 @@ to quickly create a Cobra application.`,
 		// 1. Carregar configurações
 		target := args[0]
 		logrus.Infof("Starting scan for: %s", target)
-		if docker {
-			runDockerizedScan(target)
-		} else {
-			runLocalScan(target)
-		}
+		// if docker {
+		// 	runDockerizedScan(target)
+		// } else {
+		// 	runLocalScan(target)
+		// }
 
 		// 2. Executar scanners (SonarQube, ESLint)
 
@@ -58,7 +58,7 @@ func init() {
 	scanCmd.Flags().StringP("config", "f", "", "Configuration file to use")
 	scanCmd.MarkFlagRequired("repo")
 
-	rootCmd.AddCommand(scanCmd)
+	// rootCmd.AddCommand(scanCmd)
 }
 
 func runDockerizedScan(target string) {

@@ -4,7 +4,8 @@ package git
 import (
 	"fmt"
 	"os"
-	. "sonarcli/internal/utils/common"
+
+	. "github.com/CervinoB/sonarcli/internal/utils/common"
 
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
