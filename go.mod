@@ -1,4 +1,4 @@
-module github.com/CervinoB/sonarcli
+module github.com/CervinoB/scannercli
 
 go 1.23.5
 

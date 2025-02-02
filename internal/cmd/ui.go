@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/CervinoB/sonarcli/cmd/state"
-	"github.com/CervinoB/sonarcli/internal/ui/pb"
-	"github.com/CervinoB/sonarcli/lib/consts"
+	"github.com/CervinoB/scannercli/cmd/state"
+	"github.com/CervinoB/scannercli/internal/ui/pb"
+	"github.com/CervinoB/scannercli/lib/consts"
 	"github.com/fatih/color"
 )
 

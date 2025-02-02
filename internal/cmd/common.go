@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/CervinoB/sonarcli/cmd/state"
+	"github.com/CervinoB/scannercli/cmd/state"
 	"github.com/spf13/cobra"
 )
 

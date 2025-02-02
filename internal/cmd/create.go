@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/CervinoB/sonarcli/cmd/state"
+	"github.com/CervinoB/scannercli/cmd/state"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -21,9 +21,9 @@ func (c *createCmd) run(cmd *cobra.Command, _ []string) error {
 
 	// defer func() {
 	// 	if err == nil {
-	// 		l.Debug("Everything has finished, exiting sonarcli normally!")
+	// 		l.Debug("Everything has finished, exiting scannercli normally!")
 	// 	} else {
-	// 		l.WithError(err).Debug("Everything has finished, exiting sonarcli with an error!")
+	// 		l.WithError(err).Debug("Everything has finished, exiting scannercli with an error!")
 	// 	}
 	// }()
 	// printBanner(c.gs)
@@ -32,7 +32,7 @@ func (c *createCmd) run(cmd *cobra.Command, _ []string) error {
 
 	// TODO: Implementar lógica de config
 	// 1. Carregar configurações
-	target := "https://github.com/CervinoB/sonarcli"
+	target := "https://github.com/CervinoB/scannercli"
 	l.Infof("Starting scan for: %s", target)
 	// if docker {
 	// 	runDockerizedScan(target)
@@ -53,7 +53,7 @@ func (c *createCmd) getCmdScan(gs *state.GlobalState) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "create",
 		Short: "Create a default configuration file",
-		Long: `Create a default YAML configuration file for SonarCLI.
+		Long: `Create a default YAML configuration file for scannercli.
 
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
@@ -61,7 +61,7 @@ to quickly create a Cobra application.`,
 		RunE: createCmd.run,
 		// func(cmd *cobra.Command, args []string) {
 		// 			fmt.Println("create called")
-		// 			config := `# sonarcli configuration
+		// 			config := `# scannercli configuration
 		// repositories:
 		//   - url: "https://github.com/example/repo"
 		//     tag: "v1.0.0"
@@ -71,7 +71,7 @@ to quickly create a Cobra application.`,
 		// docker:
 		// 		enabled: true
 		// `
-		// 			err := os.WriteFile("sonarcli-config.yml", []byte(config), 0644)
+		// 			err := os.WriteFile("scannercli-config.yml", []byte(config), 0644)
 		// 			if err != nil {
 		// 				logrus.WithFields(logrus.Fields{
 		// 					"error": err,
@@ -79,7 +79,7 @@ to quickly create a Cobra application.`,
 		// 				return
 		// 			}
 
-		// 			logrus.Info("Configuration file created: sonarcli-config.yml")
+		// 			logrus.Info("Configuration file created: scannercli-config.yml")
 		// 		},
 	}
 
@@ -102,14 +102,14 @@ to quickly create a Cobra application.`,
 var createCmdOld = &cobra.Command{
 	Use:   "create",
 	Short: "Create a default configuration file",
-	Long: `Create a default YAML configuration file for SonarCLI.
+	Long: `Create a default YAML configuration file for scannercli.
 
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("create called")
-		config := `# sonarcli configuration
+		config := `# scannercli configuration
 repositories:
   - url: "https://github.com/example/repo"
     tag: "v1.0.0"
@@ -119,7 +119,7 @@ scanners:
 docker:
 		enabled: true
 `
-		err := os.WriteFile("sonarcli-config.yml", []byte(config), 0644)
+		err := os.WriteFile("scannercli-config.yml", []byte(config), 0644)
 		if err != nil {
 			logrus.WithFields(logrus.Fields{
 				"error": err,
@@ -127,7 +127,7 @@ docker:
 			return
 		}
 
-		logrus.Info("Configuration file created: sonarcli-config.yml")
+		logrus.Info("Configuration file created: scannercli-config.yml")
 	},
 }
 

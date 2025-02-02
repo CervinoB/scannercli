@@ -1,6 +1,6 @@
 package cmd
 
-import "github.com/CervinoB/sonarcli/internal/cmd"
+import "github.com/CervinoB/scannercli/internal/cmd"
 
 func Execute() {
 	cmd.Execute()

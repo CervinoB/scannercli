@@ -1,7 +1,7 @@
 package sonar
 
 import (
-	"github.com/CervinoB/sonarcli/cmd/state"
+	"github.com/CervinoB/scannercli/cmd/state"
 )
 
 type Scanner struct {

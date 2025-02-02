@@ -4,8 +4,8 @@ Copyright © 2025 Joao Cervino jcervinobarbosa@gmail.com
 package cmd
 
 import (
-	"github.com/CervinoB/sonarcli/cmd/state"
-	"github.com/CervinoB/sonarcli/internal/ui/pb"
+	"github.com/CervinoB/scannercli/cmd/state"
+	"github.com/CervinoB/scannercli/internal/ui/pb"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -22,9 +22,9 @@ func (c *scanCmd) run(cmd *cobra.Command, args []string) error {
 
 	// defer func() {
 	// 	if err == nil {
-	// 		l.Debug("Everything has finished, exiting sonarcli normally!")
+	// 		l.Debug("Everything has finished, exiting scannercli normally!")
 	// 	} else {
-	// 		l.WithError(err).Debug("Everything has finished, exiting sonarcli with an error!")
+	// 		l.WithError(err).Debug("Everything has finished, exiting scannercli with an error!")
 	// 	}
 	// }()
 
@@ -34,7 +34,7 @@ func (c *scanCmd) run(cmd *cobra.Command, args []string) error {
 
 	// TODO: Implementar lógica de scan
 	// 1. Carregar configurações
-	// target := "https://github.com/CervinoB/sonarcli"
+	// target := "https://github.com/CervinoB/scannercli"
 	l.Infof("Starting scan for: %s", args)
 	// if docker {
 	// 	runDockerizedScan(target)
@@ -51,12 +51,12 @@ func (c *scanCmd) run(cmd *cobra.Command, args []string) error {
 }
 
 func runDockerizedScan(target string) {
-	logrus.Info("Running dockerized scanners")
+	logrus.Info("Running dockerized scanners", target)
 	// TODO: Implementar lógica de Docker
 }
 
 func runLocalScan(target string) {
-	logrus.Info("Running local scanners")
+	logrus.Info("Running local scanners", target)
 	// TODO: Chamar módulos de análise
 }
 

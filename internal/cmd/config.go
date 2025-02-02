@@ -6,7 +6,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/CervinoB/sonarcli/cmd/state"
+	"github.com/CervinoB/scannercli/cmd/state"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -16,14 +16,14 @@ type configCmd struct {
 	gs *state.GlobalState
 }
 
-func (c *configCmd) run(cmd *cobra.Command, _ []string) error {
+func (c *configCmd) run(_ *cobra.Command, _ []string) error {
 	var l logrus.FieldLogger = c.gs.Logger
 
 	// defer func() {
 	// 	if err == nil {
-	// 		l.Debug("Everything has finished, exiting sonarcli normally!")
+	// 		l.Debug("Everything has finished, exiting scannercli normally!")
 	// 	} else {
-	// 		l.WithError(err).Debug("Everything has finished, exiting sonarcli with an error!")
+	// 		l.WithError(err).Debug("Everything has finished, exiting scannercli with an error!")
 	// 	}
 	// }()
 	printBanner(c.gs)
@@ -31,7 +31,7 @@ func (c *configCmd) run(cmd *cobra.Command, _ []string) error {
 
 	// TODO: Implementar lógica de config
 	// 1. Carregar configurações
-	target := "https://github.com/CervinoB/sonarcli"
+	target := "https://github.com/CervinoB/scannercli"
 	l.Infof("Starting scan for: %s", target)
 	// if docker {
 	// 	runDockerizedScan(target)
@@ -47,12 +47,12 @@ func (c *configCmd) run(cmd *cobra.Command, _ []string) error {
 	return nil
 }
 
-func (c *configCmd) getCmdConfig(cmd *cobra.Command, _ []string) error {
+func (c *configCmd) getCmdConfig(_ *cobra.Command, _ []string) error {
 	if c.gs.CfgFile != "" {
 		viper.SetConfigFile(c.gs.CfgFile)
 	} else {
 		viper.AddConfigPath(".")
-		viper.SetConfigName(".sonarcli")
+		viper.SetConfigName(".scannercli")
 	}
 
 	viper.AutomaticEnv()
@@ -68,8 +68,8 @@ func (c *configCmd) getCmdConfig(cmd *cobra.Command, _ []string) error {
 // configCmd represents the config command
 var configCmdOld = &cobra.Command{
 	Use:   "config",
-	Short: "Manage SonarCLI configurations",
-	Long:  `Manage configuration settings for SonarCLI.`,
+	Short: "Manage scannercli configurations",
+	Long:  `Manage configuration settings for scannercli.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("config called")
 	},

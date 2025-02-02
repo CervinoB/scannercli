@@ -8,8 +8,8 @@ import (
 	"fmt"
 	"runtime/debug"
 
-	"github.com/CervinoB/sonarcli/cmd/state"
-	"github.com/CervinoB/sonarcli/lib/consts"
+	"github.com/CervinoB/scannercli/cmd/state"
+	"github.com/CervinoB/scannercli/lib/consts"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -27,9 +27,9 @@ func newRootCommand(gs *state.GlobalState) *rootCommand {
 
 	// the base command when called without any subcommands.
 	rootCmd := &cobra.Command{
-		Use:   "sonarcli",
+		Use:   "scannercli",
 		Short: "Code smell analysis tool for NestJS projects",
-		Long: "\n" + `SonarCLI facilita a análise de código estático utilizando o SonarScanner e 
+		Long: "\n" + `scannercli facilita a análise de código estático utilizando o SonarScanner e 
 	a coleta de métricas de code smell ao longo do tempo` + "\n" + consts.Banner(),
 		PersistentPreRunE: c.persistentPreRunE,
 		Version:           versionString(),
@@ -39,7 +39,7 @@ func newRootCommand(gs *state.GlobalState) *rootCommand {
 		`{{with .Name}}{{printf "%s " .}}{{end}}{{printf "v%s\n" .Version}}`,
 	)
 	rootCmd.PersistentFlags().BoolVar(&c.debug, "debug", false, "enable debug mode")
-	rootCmd.PersistentFlags().StringVar(&c.globalState.CfgFile, "config", "", "config file (default is $HOME/.sonarcli.yaml)")
+	rootCmd.PersistentFlags().StringVar(&c.globalState.CfgFile, "config", "", "config file (default is $HOME/.scannercli.yaml)")
 	rootCmd.PersistentFlags().BoolVar(&c.globalState.Docker, "docker", false, "run scanners in docker containers")
 
 	subCommands := []func(*state.GlobalState) *cobra.Command{getCmdVersion, getCmdScan}
@@ -54,7 +54,7 @@ func newRootCommand(gs *state.GlobalState) *rootCommand {
 
 func (c *rootCommand) persistentPreRunE(_ *cobra.Command, _ []string) error {
 	c.initLogger()
-	c.globalState.Logger.Debugf("sonarcli version: v%s", fullVersion())
+	c.globalState.Logger.Debugf("scannercli version: v%s", fullVersion())
 	return nil
 }
 
@@ -70,7 +70,7 @@ func (c *rootCommand) execute() {
 
 	defer func() {
 		if r := recover(); r != nil {
-			err := fmt.Errorf("unexpected sonarcli panic: %s\n%s", r, debug.Stack())
+			err := fmt.Errorf("unexpected scannercli panic: %s\n%s", r, debug.Stack())
 			c.globalState.Logger.Error(err)
 		}
 	}()

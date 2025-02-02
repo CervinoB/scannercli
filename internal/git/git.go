@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/CervinoB/sonarcli/cmd/state"
+	"github.com/CervinoB/scannercli/cmd/state"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing"
 )

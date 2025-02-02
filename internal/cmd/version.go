@@ -8,14 +8,14 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/CervinoB/sonarcli/cmd/state"
-	"github.com/CervinoB/sonarcli/lib/consts"
+	"github.com/CervinoB/scannercli/cmd/state"
+	"github.com/CervinoB/scannercli/lib/consts"
 
 	"github.com/spf13/cobra"
 )
 
 // fullVersion returns the maximally full version and build information for
-// the currently running k6 executable.
+// the currently running scannercli executable.
 func fullVersion() string {
 	details := versionDetails()
 
