@@ -5,7 +5,6 @@ package cmd
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"runtime/debug"
 
@@ -13,29 +12,25 @@ import (
 	"github.com/CervinoB/sonarcli/lib/consts"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"go.k6.io/k6/errext"
-	"go.k6.io/k6/errext/exitcodes"
 )
 
 type rootCommand struct {
-	debug bool
-	cmd   *cobra.Command
-	State *state.GlobalState
+	debug       bool
+	cmd         *cobra.Command
+	globalState *state.GlobalState
 }
 
 func newRootCommand(gs *state.GlobalState) *rootCommand {
 	c := &rootCommand{
-		State: gs,
+		globalState: gs,
 	}
 
 	// the base command when called without any subcommands.
 	rootCmd := &cobra.Command{
 		Use:   "sonarcli",
-		Short: "a next-generation load generator",
+		Short: "Code smell analysis tool for NestJS projects",
 		Long: "\n" + `SonarCLI facilita a análise de código estático utilizando o SonarScanner e 
 	a coleta de métricas de code smell ao longo do tempo` + "\n" + consts.Banner(),
-		// SilenceUsage:      true,
-		// SilenceErrors:     true,
 		PersistentPreRunE: c.persistentPreRunE,
 		Version:           versionString(),
 	}
@@ -44,14 +39,10 @@ func newRootCommand(gs *state.GlobalState) *rootCommand {
 		`{{with .Name}}{{printf "%s " .}}{{end}}{{printf "v%s\n" .Version}}`,
 	)
 	rootCmd.PersistentFlags().BoolVar(&c.debug, "debug", false, "enable debug mode")
-	rootCmd.PersistentFlags().StringVar(&c.State.CfgFile, "config", "", "config file (default is $HOME/.sonarcli.yaml)")
-	rootCmd.PersistentFlags().BoolVar(&c.State.Docker, "docker", false, "run scanners in docker containers")
+	rootCmd.PersistentFlags().StringVar(&c.globalState.CfgFile, "config", "", "config file (default is $HOME/.sonarcli.yaml)")
+	rootCmd.PersistentFlags().BoolVar(&c.globalState.Docker, "docker", false, "run scanners in docker containers")
 
-	subCommands := []func(*state.GlobalState) *cobra.Command{
-		getCmdArchive, getCmdCloud, getCmdNewScript, getCmdInspect,
-		getCmdLogin, getCmdPause, getCmdResume, getCmdScale, getCmdRun,
-		getCmdStats, getCmdStatus, getCmdVersion,
-	}
+	subCommands := []func(*state.GlobalState) *cobra.Command{getCmdVersion, getCmdScan}
 
 	for _, sc := range subCommands {
 		rootCmd.AddCommand(sc(gs))
@@ -63,25 +54,24 @@ func newRootCommand(gs *state.GlobalState) *rootCommand {
 
 func (c *rootCommand) persistentPreRunE(_ *cobra.Command, _ []string) error {
 	c.initLogger()
-	c.State.Logger.Debugf("k6 version: v%s", fullVersion())
+	c.globalState.Logger.Debugf("sonarcli version: v%s", fullVersion())
 	return nil
 }
 
 func (c *rootCommand) execute() {
-	ctx, cancel := context.WithCancel(c.State.Ctx)
-	c.State.Ctx = ctx
+	ctx, cancel := context.WithCancel(c.globalState.Ctx)
+	c.globalState.Ctx = ctx
 
 	exitCode := -1
 	defer func() {
 		cancel()
-		c.State.OSExit(exitCode)
+		c.globalState.OSExit(exitCode)
 	}()
 
 	defer func() {
 		if r := recover(); r != nil {
-			exitCode = int(exitcodes.GoPanic)
 			err := fmt.Errorf("unexpected sonarcli panic: %s\n%s", r, debug.Stack())
-			c.State.Logger.Error(err)
+			c.globalState.Logger.Error(err)
 		}
 	}()
 
@@ -91,13 +81,7 @@ func (c *rootCommand) execute() {
 		return
 	}
 
-	var ecerr errext.HasExitCode
-	if errors.As(err, &ecerr) {
-		exitCode = int(ecerr.ExitCode())
-	}
-
-	errText, fields := errext.Format(err)
-	c.State.Logger.WithFields(fields).Error(errText)
+	CheckIfError(c.globalState, err)
 }
 
 func Execute() {
@@ -107,7 +91,7 @@ func Execute() {
 
 func (c *rootCommand) initLogger() {
 	if c.debug {
-		c.State.Logger.SetLevel(logrus.DebugLevel)
-		c.State.Logger.Debug("Debug mode enabled")
+		c.globalState.Logger.SetLevel(logrus.DebugLevel)
+		c.globalState.Logger.Debug("Debug mode enabled")
 	}
 }
