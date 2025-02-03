@@ -5,6 +5,7 @@ import (
 	"os"
 
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/spf13/viper"
 )
 
 type Model struct {
@@ -57,13 +58,20 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		// The "enter" key and the spacebar (a literal space) toggle
 		// the selected state for the item that the cursor is pointing at.
-		case "enter", " ":
+		case " ":
 			_, ok := m.selected[m.cursor]
 			if ok {
 				delete(m.selected, m.cursor)
 			} else {
 				m.selected[m.cursor] = struct{}{}
 			}
+		case "enter":
+			_, ok := m.selected[m.cursor]
+			if !ok {
+				m.selected[m.cursor] = struct{}{}
+			}
+			viper.Set("scanner", m.selected[m.cursor])
+			return m, tea.Quit
 		}
 	}
 
@@ -96,7 +104,7 @@ func (m Model) View() string {
 	}
 
 	// The footer
-	s += "\nPress q to quit.\n"
+	s += "\nPress q to quit and enter to select scanner"
 
 	// Send the UI for rendering
 	return s

@@ -18,8 +18,9 @@ import (
 )
 
 type rootCommand struct {
-	cmd *cobra.Command
-	gs  *state.GlobalState
+	cmd   *cobra.Command
+	gs    *state.GlobalState
+	debug bool
 }
 
 func newRootCommand(gs *state.GlobalState) *rootCommand {
@@ -41,8 +42,9 @@ func newRootCommand(gs *state.GlobalState) *rootCommand {
 	rootCmd.SetVersionTemplate(
 		`{{with .Name}}{{printf "%s " .}}{{end}}{{printf "v%s\n" .Version}}`,
 	)
-	rootCmd.PersistentFlags().StringVar(&c.gs.CfgFile, "config", "", "config file (default is $HOME/.scannercli.yaml)")
+	rootCmd.PersistentFlags().StringVar(&c.gs.CfgFile, "config", "", "config file (default is ./scannercli.yaml)")
 	rootCmd.PersistentFlags().BoolVar(&c.gs.Docker, "docker", false, "run scanners in docker containers")
+	rootCmd.PersistentFlags().BoolVarP(&c.debug, "debug", "d", false, "debug mode")
 
 	subCommands := []func(*state.GlobalState) *cobra.Command{getCmdVersion, getCmdScan}
 
@@ -55,9 +57,10 @@ func newRootCommand(gs *state.GlobalState) *rootCommand {
 }
 
 func (c *rootCommand) persistentPreRunE(_ *cobra.Command, _ []string) error {
+	printBanner(c.gs)
 	c.initLogger()
-
 	c.gs.Logger.Debugf("scannercli version: v%s", fullVersion())
+	c.initConfig(c.gs)
 	return nil
 }
 
@@ -93,19 +96,25 @@ func Execute() {
 	newRootCommand(gs).execute()
 }
 
-func (c *rootCommand) initConfig() {
+func (c *rootCommand) initConfig(gs *state.GlobalState) {
 	if c.gs.CfgFile != "" {
 		// Use config file from the flag.
 		viper.SetConfigFile(c.gs.CfgFile)
 	} else {
 		// Find home directory.
-		home, err := os.UserHomeDir()
-		cobra.CheckErr(err)
-
 		// Search config in home directory with name ".cobra" (without extension).
-		viper.AddConfigPath(home)
+		viper.SetConfigName("scannercli.yaml")
+		viper.AddConfigPath(".")
 		viper.SetConfigType("yaml")
-		viper.SetConfigName(".cobra")
+
+		err := viper.ReadInConfig() // Find and read the config file
+		if err != nil {             // Handle errors reading the config file
+			gs.Logger.Error(err)
+			panic(fmt.Errorf("fatal error config file: %w", err))
+		}
+		configs := viper.AllSettings()
+		// Log all configurations
+		logConfigs(gs, configs)
 	}
 
 	viper.AutomaticEnv()
@@ -124,8 +133,33 @@ func (c *rootCommand) initConfig() {
 	}
 }
 
+// Helper function to log configurations recursively
+func logConfigs(gs *state.GlobalState, configs map[string]interface{}) {
+	logger := gs.Logger
+	for key, value := range configs {
+		switch v := value.(type) {
+		case map[string]interface{}:
+			// If the value is a nested map, log the key and recursively log its contents
+			logger.Debugf("Key: %s", key)
+			logConfigs(gs, v)
+		case []interface{}:
+			// If the value is a slice, log each item in the slice
+			logger.Debugf("Key: %s", key)
+			for i, item := range v {
+				logger.Debugf("  Item %d: %v", i, item)
+			}
+		default:
+			// Log simple key-value pairs
+			logger.Debugf("Key: %s, Value: %v", key, value)
+		}
+	}
+}
+
 func (c *rootCommand) initLogger() {
-	c.gs.Logger.SetLevel(logrus.DebugLevel)
-	c.gs.Logger.Debug("Debug mode enabled")
-	c.gs.Logger.SetLevel(logrus.InfoLevel)
+	if c.debug {
+		c.gs.Logger.SetLevel(logrus.DebugLevel)
+		c.gs.Logger.Debug("Debug mode enabled")
+	} else {
+		c.gs.Logger.SetLevel(logrus.InfoLevel)
+	}
 }

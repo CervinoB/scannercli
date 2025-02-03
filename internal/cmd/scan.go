@@ -5,22 +5,40 @@ package cmd
 
 import (
 	"github.com/CervinoB/scannercli/cmd/state"
+	"github.com/CervinoB/scannercli/internal/git"
 	"github.com/CervinoB/scannercli/internal/ui"
 	"github.com/CervinoB/scannercli/internal/ui/pb"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 type scanCmd struct {
-	gs *state.GlobalState
+	gs       *state.GlobalState
+	ui       *ui.Model
+	scanner  string
+	repoURL  string
+	repoPath string // path to the local repository
+	// docker bool
 }
 
 func (c *scanCmd) run(cmd *cobra.Command, args []string) error {
 	var l logrus.FieldLogger = c.gs.Logger
-	printBanner(c.gs)
 
-	l.Info("============= Chose scanner to use =============")
-	ui.New()
+	// l.Info("============= Chose scanner to use =============")
+	// ui.New()
+	sancConfig := viper.GetString("scanner")
+	l.Infof("Using scanner: %s", sancConfig)
+
+	if err := git.CloneRepo(c.gs, viper.GetString("url"), viper.GetString("clonepath")); err != nil {
+		if err.Error() == "repository already exists" {
+			l.Warn("Repositório já existe, continuando...", err)
+			l.Debug("Try fetching...")
+			git.Fetch(c.gs)
+		} else {
+			l.Fatalf("Erro ao clonar repositório: %v", err)
+		}
+	}
 
 	initBar := pb.New(pb.WithConstLeft("Init"))
 	l.Info("Starting repository scan...")
