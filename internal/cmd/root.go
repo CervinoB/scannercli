@@ -63,7 +63,6 @@ func newRootCommand(gs *state.GlobalState) *rootCommand {
 }
 
 func (c *rootCommand) persistentPreRunE(_ *cobra.Command, _ []string) error {
-	printBanner(c.gs)
 	c.initLogger()
 	c.gs.Logger.Debugf("scannercli version: v%s", fullVersion())
 	c.initConfig(c.gs)
