@@ -23,6 +23,12 @@ type rootCommand struct {
 	debug bool
 }
 
+func Execute() {
+	gs := state.NewState(context.Background())
+	// p := tea.NewProgram() //TODO: newRootCommand(gs) -> initialModel()
+	newRootCommand(gs).execute()
+}
+
 func newRootCommand(gs *state.GlobalState) *rootCommand {
 	c := &rootCommand{
 		gs: gs,
@@ -88,12 +94,6 @@ func (c *rootCommand) execute() {
 	}
 
 	CheckIfError(c.gs, err)
-}
-
-func Execute() {
-	gs := state.NewState(context.Background())
-	// p := tea.NewProgram() //TODO: newRootCommand(gs) -> initialModel()
-	newRootCommand(gs).execute()
 }
 
 func (c *rootCommand) initConfig(gs *state.GlobalState) {

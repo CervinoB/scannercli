@@ -101,38 +101,5 @@ to quickly create a Cobra application.`,
 	scanCmd.Flags().StringP("commit", "c", "HEAD", "Commit hash or tag to analyze")
 	scanCmd.Flags().StringP("scanner", "s", "", "Scanner to use (sonarqube, eslint, etc.)")
 
-	// rootCmd.AddCommand(scanCmd)
 	return scanCmd
 }
-
-// scanCmd represents the scan command
-// var scanCmdOld = &cobra.Command{
-// 	Use:   "scan [target]",
-// 	Short: "Scan a repository for code smells",
-// 	Long: `Scan a repository using SonarQube, ESLint, and other tools to detect code smells.
-
-// Cobra is a CLI library for Go that empowers applications.
-// This application is a tool to generate the needed files
-// to quickly create a Cobra application.`,
-// 	Args: cobra.ExactArgs(1),
-// 	Run: func(cmd *cobra.Command, args []string) {
-// 		fmt.Println("scan called")
-// 		logrus.Info("Starting repository scan...")
-
-// 		// TODO: Implementar lógica de scan
-// 		// 1. Carregar configurações
-// 		target := args[0]
-// 		logrus.Infof("Starting scan for: %s", target)
-// 		// if docker {
-// 		// 	runDockerizedScan(target)
-// 		// } else {
-// 		// 	runLocalScan(target)
-// 		// }
-
-// 		// 2. Executar scanners (SonarQube, ESLint)
-
-// 		// 3. Gerar relatório
-
-// 		logrus.Info("Scan completed successfully.")
-// 	},
-// }
