@@ -1,6 +1,5 @@
 /*
 Copyright © 2025 Joao Cervino jcervinobarbosa@gmail.com
-
 */
 package cmd
 
@@ -10,18 +9,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
-
-
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "scannercli",
-	Short: "A brief description of your application",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+	Short: "A CLI tool to scan repositories and gather metrics",
+	Long: `ScannerCLI is a command-line tool designed to scan repositories and
+retrieve metrics for each commit, tag, and hash using the desired scanner.
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+This tool helps developers and teams analyze repository history and extract
+valuable insights efficiently.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
@@ -47,5 +43,3 @@ func init() {
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
-
-
