@@ -36,5 +36,5 @@ func ReadItems(filename string) ([]Item, error) {
 		return []Item{}, err
 	}
 
-	return []Item{}, nil
+	return items, nil
 }
