@@ -7,7 +7,8 @@ import (
 )
 
 type Item struct {
-	Text string `json:"text"`
+	Text     string `json:"text"`
+	Priority int    `json:"priority"`
 }
 
 func SaveItems(filename string, items []Item) error {
@@ -37,4 +38,26 @@ func ReadItems(filename string) ([]Item, error) {
 	}
 
 	return items, nil
+}
+
+func (i *Item) SetPriority(pri int) {
+	switch pri {
+	case 1:
+		i.Priority = 1
+	case 3:
+		i.Priority = 3
+	default:
+		i.Priority = 2
+	}
+
+}
+
+func (i *Item) PrettyPrint() string {
+	if i.Priority == 1 {
+		return "(1)"
+	}
+	if i.Priority == 3 {
+		return "(3)"
+	}
+	return "  "
 }
