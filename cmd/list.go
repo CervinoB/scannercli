@@ -47,7 +47,7 @@ func listRun(cmd *cobra.Command, args []string) {
 		fmt.Println("No items found in the file.")
 		return
 	}
-	fmt.Printf("Items: %+v\n", items)
+	// fmt.Printf("Items: %+v\n", items)
 
 	w := tabwriter.NewWriter(os.Stdout, 3, 0, 1, ' ', 0)
 	for _, i := range items {
