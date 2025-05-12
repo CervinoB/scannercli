@@ -4,11 +4,13 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strconv"
 )
 
 type Item struct {
 	Text     string `json:"text"`
 	Priority int    `json:"priority"`
+	Position int    `json:"position"`
 }
 
 func SaveItems(filename string, items []Item) error {
@@ -37,6 +39,10 @@ func ReadItems(filename string) ([]Item, error) {
 		return []Item{}, err
 	}
 
+	for i, _ := range items {
+		items[i].Position = i + 1
+	}
+
 	return items, nil
 }
 
@@ -60,4 +66,8 @@ func (i *Item) PrettyPrint() string {
 		return "(3)"
 	}
 	return "  "
+}
+
+func (i *Item) Label() string {
+	return strconv.Itoa(i.Position) + "."
 }
