@@ -21,6 +21,11 @@ type GlobalState struct {
 
 func NewState(ctx context.Context) *GlobalState {
 	logger := logrus.New()
+	logger.SetFormatter(&logrus.TextFormatter{
+		FullTimestamp: true,
+	})
+	logger.SetLevel(logrus.InfoLevel)
+
 	return &GlobalState{
 		Ctx:     ctx,
 		Docker:  false,

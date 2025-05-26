@@ -10,7 +10,7 @@ type Scanner struct {
 
 }
 
-func (s *Scanner) Run(scanner string, args []string) error {
+func (s *Scanner) New(scanner string, args []string) error {
 	l := s.gs.Logger
 
 	l.Infof("Running scanner: %s", scanner)

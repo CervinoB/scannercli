@@ -6,85 +6,25 @@ package cmd
 import (
 	"github.com/CervinoB/scannercli/cmd/state"
 	"github.com/CervinoB/scannercli/internal/git"
-	"github.com/CervinoB/scannercli/internal/ui"
-	"github.com/CervinoB/scannercli/internal/ui/pb"
+	"github.com/CervinoB/scannercli/lib/consts"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
 type scanCmd struct {
-	gs       *state.GlobalState
-	ui       *ui.Model
-	scanner  string
-	repoURL  string
-	repoPath string // path to the local repository
+	gs        *state.GlobalState
+	scanner   string
+	repoURL   string
+	repoPath  string // path to the local repository
+	clonePath string // path to clone the repository
 	// docker bool
-}
-
-func (c *scanCmd) run(cmd *cobra.Command, args []string) error {
-	var l logrus.FieldLogger = c.gs.Logger
-
-	// l.Info("============= Chose scanner to use =============")
-	// ui.New()
-	sancConfig := viper.GetString("scanner")
-	l.Infof("Using scanner: %s", sancConfig)
-
-	if err := git.CloneRepo(c.gs, viper.GetString("url"), viper.GetString("clonepath")); err != nil {
-		if err.Error() == "repository already exists" {
-			l.Warn("Repositório já existe, continuando...", err)
-			l.Debug("Try fetching...")
-			git.Fetch(c.gs)
-		} else {
-			l.Fatalf("Erro ao clonar repositório: %v", err)
-		}
-	}
-
-	initBar := pb.New(pb.WithConstLeft("Init"))
-	l.Info("Starting repository scan...")
-
-	// defer func() {
-	// 	if err == nil {
-	// 		l.Debug("Everything has finished, exiting scannercli normally!")
-	// 	} else {
-	// 		l.WithError(err).Debug("Everything has finished, exiting scannercli with an error!")
-	// 	}
-	// }()
-
-	initBar.Modify(pb.WithConstProgress(0, "Starting outputs"))
-
-	// printBar(c.gs, initBar)
-
-	// TODO: Implementar lógica de scan
-	// 1. Carregar configurações
-	// target := "https://github.com/CervinoB/scannercli"
-	l.Infof("Starting scan for: %s", args)
-	// if docker {
-	// 	runDockerizedScan(target)
-	// } else {
-	// 	runLocalScan(target)
-	// }
-
-	// 2. Executar scanners (SonarQube, ESLint)
-
-	// 3. Gerar relatório
-
-	l.Info("Scan completed successfully.")
-	return nil
-}
-
-func runDockerizedScan(target string) {
-	logrus.Info("Running dockerized scanners", target)
-	// TODO: Implementar lógica de Docker
-}
-
-func runLocalScan(target string) {
-	logrus.Info("Running local scanners", target)
-	// TODO: Chamar módulos de análise
+	tags []string // tags to apply to the scan
+	name string   // name of the repository
 }
 
 func getCmdScan(gs *state.GlobalState) *cobra.Command {
-	s := &scanCmd{gs: gs}
+	s := &scanCmd{gs: gs, clonePath: consts.ClonePath}
 	scanCmd := &cobra.Command{
 		Use:   "scan",
 		Short: "Scan a repository for code smells",
@@ -102,4 +42,58 @@ to quickly create a Cobra application.`,
 	scanCmd.Flags().StringP("scanner", "s", "", "Scanner to use (sonarqube, eslint, etc.)")
 
 	return scanCmd
+}
+
+func (c *scanCmd) run(cmd *cobra.Command, args []string) (err error) {
+	c.initConfig()
+
+	if err = git.CloneRepo(c.gs, c.repoURL, c.clonePath+"/"+c.name); err != nil {
+		if err.Error() == "repository already exists" {
+			c.gs.Logger.Warn(err)
+			c.gs.Logger.Debug("Try pulling...")
+			git.Pull(c.gs, c.clonePath+"/"+c.name)
+		} else {
+			c.gs.Logger.Fatalf("Erro ao clonar repositório: %v", err)
+		}
+	}
+
+	c.gs.Logger.Info("Starting repository scan...")
+
+	// TODO: Implementar lógica de scan
+
+	// aways run in dockerized modes
+
+	// 2. Executar scanners (SonarQube, ESLint)
+
+	// 3. Gerar relatório
+
+	c.gs.Logger.Info("Scan completed successfully.")
+	return nil
+}
+
+func (c *scanCmd) initConfig() {
+	c.scanner = viper.GetString("scanner")
+	c.gs.Logger.Infof("Using scanner: %s", c.scanner)
+
+	c.tags = viper.GetStringSlice("tags")
+	c.gs.Logger.Infof("Using tags: %s", c.tags)
+
+	c.repoURL = viper.GetString("url")
+	c.gs.Logger.Infof("Using URL: %s", c.repoURL)
+
+	c.name = viper.GetString("name")
+	c.gs.Logger.Infof("Using name: %s", c.name)
+
+	c.repoPath = viper.GetString("nestPath")
+	c.gs.Logger.Infof("Using nest server path: %s", c.repoPath)
+}
+
+func runDockerizedScan(target string) {
+	logrus.Info("Running dockerized scanners", target)
+	// TODO: Implementar lógica de Docker
+}
+
+func runLocalScan(target string) {
+	logrus.Info("Running local scanners", target)
+	// TODO: Chamar módulos de análise
 }

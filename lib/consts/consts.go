@@ -30,3 +30,5 @@ func Banner() string {
 
 	return banner
 }
+
+const ClonePath = "repo"

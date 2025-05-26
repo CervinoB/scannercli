@@ -27,9 +27,10 @@ type Git struct {
 // Returns:
 //   - error: An error object if the cloning process fails, otherwise nil.
 func CloneRepo(gs *state.GlobalState, url string, path string) error {
+	var l = gs.Logger
 	// fmt.Println("Clonando repositório:", url)
-	gs.Logger.Infof("Clonando repositório: %s", url)
-	gs.Logger.Debug("Path do repositório:", path)
+	l.Infof("Clonando repositório: %s", url)
+	l.Debug("Path do repositório:", path)
 	_, err := git.PlainClone(path, false, &git.CloneOptions{
 		URL:      url,
 		Progress: os.Stdout,
@@ -52,6 +53,9 @@ func CheckoutTag(gs *state.GlobalState, tagName string) error {
 	err = worktree.Checkout(&git.CheckoutOptions{
 		Branch: plumbing.ReferenceName("refs/tags/" + tagName),
 	})
+	if err != nil {
+		return err
+	}
 	gs.Logger.Info("git show-ref --head HEAD")
 	ref, err := repo.Head()
 	if err != nil {
@@ -103,5 +107,34 @@ func fetch(gs *state.GlobalState, repo *git.Repository) error {
 		gs.Logger.Info("No updates found")
 	}
 
+	return nil
+}
+
+// Pull attempts to perform a 'git pull' operation on the repository located at the given path.
+// It logs the progress and any errors encountered using the provided GlobalState's logger.
+// If the repository is already up to date, it does not treat it as an error.
+// Returns an error if the repository cannot be opened, the worktree cannot be retrieved,
+// or if the pull operation fails for reasons other than being already up to date.
+func Pull(gs *state.GlobalState, path string) error {
+	repo, err := git.PlainOpen(path)
+	if err != nil {
+		gs.Logger.Error("Error pulling:", err)
+		return err
+	}
+	worktree, err := repo.Worktree()
+	if err != nil {
+		gs.Logger.Error("Error getting worktree:", err)
+		return err
+	}
+	gs.Logger.Info("git pull")
+	err = worktree.Pull(&git.PullOptions{
+		RemoteName: "origin",
+		Progress:   os.Stdout,
+	})
+	if err != nil && err != git.NoErrAlreadyUpToDate {
+		gs.Logger.Error("Error pulling:", err)
+		return err
+	}
+	gs.Logger.Info("Pull completed successfully, ", err)
 	return nil
 }
