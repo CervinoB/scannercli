@@ -38,30 +38,33 @@ func CloneRepo(gs *state.GlobalState, url string, path string) error {
 	return err
 }
 
-func CheckoutTag(gs *state.GlobalState, tagName string) error {
-	repo, err := git.PlainOpen(viper.GetString("path"))
+func CheckoutTag(gs *state.GlobalState, tag string, path string) error {
+	repo, err := git.PlainOpen(path)
 	if err != nil {
 		return err
 	}
 
-	worktree, err := repo.Worktree()
+	fmt.Println("Alternando para tag:", tag)
+	gs.Logger.Info("git show-ref --tag")
+
+	tagrefs, err := repo.Tags()
 	if err != nil {
 		return err
 	}
-
-	fmt.Println("Alternando para tag:", tagName)
-	err = worktree.Checkout(&git.CheckoutOptions{
-		Branch: plumbing.ReferenceName("refs/tags/" + tagName),
+	err = tagrefs.ForEach(func(t *plumbing.Reference) error {
+		fmt.Println(t.Name())
+		return nil
 	})
 	if err != nil {
+		gs.Logger.Error("Error listing tags:", err)
 		return err
 	}
-	gs.Logger.Info("git show-ref --head HEAD")
-	ref, err := repo.Head()
-	if err != nil {
-		return err
-	}
-	fmt.Println(ref.Hash())
+	// gs.Logger.Info("git show-ref --head HEAD")
+	// ref, err := repo.Head()
+	// if err != nil {
+	// 	return err
+	// }
+	// fmt.Println(ref.Hash())
 	return err
 }
 

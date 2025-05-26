@@ -4,8 +4,11 @@ Copyright © 2025 Joao Cervino jcervinobarbosa@gmail.com
 package cmd
 
 import (
+	"sort"
+
 	"github.com/CervinoB/scannercli/cmd/state"
 	"github.com/CervinoB/scannercli/internal/git"
+	"github.com/CervinoB/scannercli/internal/scanner"
 	"github.com/CervinoB/scannercli/lib/consts"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
@@ -58,12 +61,19 @@ func (c *scanCmd) run(cmd *cobra.Command, args []string) (err error) {
 	}
 
 	c.gs.Logger.Info("Starting repository scan...")
-
 	// TODO: Implementar lógica de scan
+	// get the first tag in order to checkout the commit, get the first tag in the list, it should be ordered
+	firstTag := c.tags[0]
+	c.gs.Logger.Infof("Checking out tag: %s", firstTag)
+
+	if err = git.CheckoutTag(c.gs, firstTag, c.clonePath+"/"+c.name); err != nil {
+		c.gs.Logger.Fatalf("Error checking out tag %s: %v", firstTag, err)
+	}
 
 	// aways run in dockerized modes
 
 	// 2. Executar scanners (SonarQube, ESLint)
+	runDockerizedScan(c.clonePath + "/" + c.name + "/" + c.repoPath)
 
 	// 3. Gerar relatório
 
@@ -76,6 +86,19 @@ func (c *scanCmd) initConfig() {
 	c.gs.Logger.Infof("Using scanner: %s", c.scanner)
 
 	c.tags = viper.GetStringSlice("tags")
+	if len(c.tags) > 1 {
+		// Sort tags alphabetically (or by semver if needed)
+		// For now, sort alphabetically
+		sortedTags := make([]string, len(c.tags))
+		copy(sortedTags, c.tags)
+		// You can use sort.Strings for alphabetical order
+		// import "sort" at the top if not already imported
+		// sort.Strings(sortedTags)
+		// If you want semantic version sorting, use a semver package
+		// For now, just sort alphabetically:
+		sort.Strings(sortedTags)
+		c.tags = sortedTags
+	}
 	c.gs.Logger.Infof("Using tags: %s", c.tags)
 
 	c.repoURL = viper.GetString("url")
@@ -88,9 +111,19 @@ func (c *scanCmd) initConfig() {
 	c.gs.Logger.Infof("Using nest server path: %s", c.repoPath)
 }
 
-func runDockerizedScan(target string) {
+func (c *scanCmd) runDockerizedScan(target string) {
 	logrus.Info("Running dockerized scanners", target)
 	// TODO: Implementar lógica de Docker
+	// Exemplo: chamar um scanner em um container Docker
+
+	err := scanner.ExecScanner(c.gs, "sonarqube", []string{"-Dsonar.projectKey=" + target})
+	if err != nil {
+		logrus.Errorf("Error running dockerized scan: %v", err)
+	}
+
+	logrus.Info("Dockerized scan completed successfully.")
+	// Placeholder for running local scans
+	runLocalScan(target)
 }
 
 func runLocalScan(target string) {

@@ -1,17 +1,16 @@
-package sonar
+package scanner
 
 import (
 	"github.com/CervinoB/scannercli/cmd/state"
 )
 
 type Scanner struct {
-	gs *state.GlobalState
 	// TODO: adicionar outros parâmetros
 
 }
 
-func (s *Scanner) New(scanner string, args []string) error {
-	l := s.gs.Logger
+func (s *Scanner) New(gs *state.GlobalState, scanner string, args []string) error {
+	var l = gs.Logger
 
 	l.Infof("Running scanner: %s", scanner)
 
@@ -23,5 +22,12 @@ func (s *Scanner) New(scanner string, args []string) error {
 	// if err != nil {
 	// 	return fmt.Errorf("error running scanner: %s", err)
 	// }
+	return nil
+}
+
+func (s *Scanner) ExecScanner(gs *state.GlobalState, scanner string, args []string) error {
+	l := gs.Logger
+	l.Infof("Executing scanner: %s", scanner)
+
 	return nil
 }

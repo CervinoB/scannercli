@@ -1,25 +1,41 @@
 services:
   sonarqube:
-    image: sonarqube:community
-    container_name: sonarqube
-    ports:
-      - "9000:9000"
-    environment:
-      - SONAR_JDBC_URL=jdbc:postgresql://db:5432/sonarqube
-      - SONAR_JDBC_USERNAME=sonar
-      - SONAR_JDBC_PASSWORD=sonar
+    image: sonarqube
     depends_on:
-      - db
+      - sonar_db
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://sonar_db:5432/sonar
+      SONAR_JDBC_USERNAME: sonar
+      SONAR_JDBC_PASSWORD: sonar
+    ports:
+      - "9001:9000"
+    volumes:
+      - sonarqube_conf:/opt/sonarqube/conf
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+      - sonarqube_temp:/opt/sonarqube/temp
 
-  db:
-    image: postgres:14
-    container_name: sonarqube_db
+  sonar_db:
+    image: postgres:13
     environment:
       POSTGRES_USER: sonar
       POSTGRES_PASSWORD: sonar
-      POSTGRES_DB: sonarqube
+      POSTGRES_DB: sonar
     volumes:
-      - sonarqube_data:/var/lib/postgresql/data
+      - sonar_db:/var/lib/postgresql
+      - sonar_db_data:/var/lib/postgresql/data
 
 volumes:
+  sonarqube_conf:
   sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
+  sonarqube_temp:
+  sonar_db:
+  sonar_db_data:
+    # sqp_e53f2c4695a8a25933c4dc97e382148406908db8
+
+    # sonar-scanner \ -Dsonar.projectKey=test \ -Dsonar.sources=. \ -Dsonar.host.url=http://localhost:9001 \ -Dsonar.token=sqp_e53f2c4695a8a25933c4dc97e382148406908db8
+    # sqp_dcc040875eb506c549e393e468e7f495b9d562c1
+# sqp_60d6225c77a4dc42af5233c3d08d317b37a613a9
