@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"os/exec"
 	"runtime/debug"
 
 	"github.com/CervinoB/scannercli/cmd/state"
@@ -66,6 +67,9 @@ func (c *rootCommand) persistentPreRunE(_ *cobra.Command, _ []string) error {
 	c.initLogger()
 	c.gs.Logger.Debugf("scannercli version: v%s", fullVersion())
 	c.initConfig(c.gs)
+
+	c.ensureSonarContainerRunning()
+
 	return nil
 }
 
@@ -114,6 +118,7 @@ func (c *rootCommand) initConfig(gs *state.GlobalState) {
 		configs := viper.AllSettings()
 		// Log all configurations
 		logConfigs(gs, configs)
+
 	}
 
 	viper.AutomaticEnv()
@@ -161,4 +166,14 @@ func (c *rootCommand) initLogger() {
 	} else {
 		c.gs.Logger.SetLevel(logrus.InfoLevel)
 	}
+}
+
+func (c *rootCommand) ensureSonarContainerRunning() string {
+	cmd := exec.Command("docker", "ps", "-q", "--filter", "name=sonarqube-scanner")
+	output, _ := cmd.Output()
+	if len(output) > 0 {
+		fmt.Println("SonarQube container already running.")
+		return "<container_id>" // container is running
+	}
+	return ""
 }

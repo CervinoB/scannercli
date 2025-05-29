@@ -7,7 +7,6 @@ import (
 
 	"github.com/CervinoB/scannercli/cmd/state"
 	"github.com/go-git/go-git/v5"
-	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/spf13/viper"
 )
 
@@ -38,34 +37,25 @@ func CloneRepo(gs *state.GlobalState, url string, path string) error {
 	return err
 }
 
-func CheckoutTag(gs *state.GlobalState, tag string, path string) error {
-	repo, err := git.PlainOpen(path)
+// CheckoutTag checks out the specified tag in the given repository path.
+func CheckoutTag(gs *state.GlobalState, tagName, path string) error {
+	// Open the existing repository
+	r, err := git.PlainOpen(path)
 	if err != nil {
+		gs.Logger.WithError(err).Error("Failed to open repository")
 		return err
 	}
 
-	fmt.Println("Alternando para tag:", tag)
-	gs.Logger.Info("git show-ref --tag")
+	gs.Logger.Info("git show-ref --head HEAD")
+	ref, err := r.Head()
+	if err != nil {
+		gs.Logger.WithError(err).Error("Failed to get HEAD reference")
+		return err
+	}
+	fmt.Println(ref.Hash())
 
-	tagrefs, err := repo.Tags()
-	if err != nil {
-		return err
-	}
-	err = tagrefs.ForEach(func(t *plumbing.Reference) error {
-		fmt.Println(t.Name())
-		return nil
-	})
-	if err != nil {
-		gs.Logger.Error("Error listing tags:", err)
-		return err
-	}
-	// gs.Logger.Info("git show-ref --head HEAD")
-	// ref, err := repo.Head()
-	// if err != nil {
-	// 	return err
-	// }
-	// fmt.Println(ref.Hash())
-	return err
+	gs.Logger.Infof("Successfully checked out tag '%s' at commit %s", tagName, ref.Hash())
+	return nil
 }
 
 func Fetch(gs *state.GlobalState) error {

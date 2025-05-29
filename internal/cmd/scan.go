@@ -64,20 +64,24 @@ func (c *scanCmd) run(cmd *cobra.Command, args []string) (err error) {
 	// TODO: Implementar lógica de scan
 	// get the first tag in order to checkout the commit, get the first tag in the list, it should be ordered
 	firstTag := c.tags[0]
+	// if len(firstTag) > 0 && firstTag[0] == 'v' {
+	// 	firstTag = firstTag[1:]
+	// }
 	c.gs.Logger.Infof("Checking out tag: %s", firstTag)
 
-	if err = git.CheckoutTag(c.gs, firstTag, c.clonePath+"/"+c.name); err != nil {
-		c.gs.Logger.Fatalf("Error checking out tag %s: %v", firstTag, err)
-	}
+	// if err = git.CheckoutTag(c.gs, firstTag, c.clonePath+"/"+c.name); err != nil {
+	// 	c.gs.Logger.Fatalf("Error checking out tag %s: %v", firstTag, err)
+	// }
 
 	// aways run in dockerized modes
 
 	// 2. Executar scanners (SonarQube, ESLint)
-	runDockerizedScan(c.clonePath + "/" + c.name + "/" + c.repoPath)
+	scanner.New(c.gs, c.scanner, c.repoPath)
+	c.runDockerizedScan(c.clonePath + "/" + c.name + "/" + c.repoPath)
 
 	// 3. Gerar relatório
 
-	c.gs.Logger.Info("Scan completed successfully.")
+	c.gs.Logger.Info("Scan ended.")
 	return nil
 }
 
@@ -112,18 +116,17 @@ func (c *scanCmd) initConfig() {
 }
 
 func (c *scanCmd) runDockerizedScan(target string) {
-	logrus.Info("Running dockerized scanners", target)
+	logrus.Info("Running dockerized scanners: ", target)
 	// TODO: Implementar lógica de Docker
 	// Exemplo: chamar um scanner em um container Docker
 
-	err := scanner.ExecScanner(c.gs, "sonarqube", []string{"-Dsonar.projectKey=" + target})
+	err := scanner.ExecScanner(c.gs, "sonarqube", target)
 	if err != nil {
 		logrus.Errorf("Error running dockerized scan: %v", err)
 	}
 
-	logrus.Info("Dockerized scan completed successfully.")
+	logrus.Info("Dockerized scan ended.")
 	// Placeholder for running local scans
-	runLocalScan(target)
 }
 
 func runLocalScan(target string) {
