@@ -4,11 +4,9 @@ Copyright © 2025 NAME HERE <EMAIL ADDRESS>
 package cmd
 
 import (
-	"encoding/json"
 	"fmt"
-	"io"
-	"net/http"
 
+	"github.com/CervinoB/scannercli/internal/api"
 	"github.com/spf13/cobra"
 )
 
@@ -42,70 +40,17 @@ func init() {
 func deleteRun(cmd *cobra.Command, args []string) {
 	fmt.Println("delete called")
 
-	client := &http.Client{Jar: AuthData.CookieJar}
-	req, err := http.NewRequest("GET", "http://localhost:9000/api/projects/search", nil)
+	keys, err := api.ListProjects("http://localhost:9000", AuthData)
 	if err != nil {
-		fmt.Println("Error creating request:", err)
+		fmt.Println("Failed to list projects:", err)
 		return
-	}
-	req.Header.Set("X-XSRF-TOKEN", AuthData.XSRFToken)
-
-	resp, err := client.Do(req)
-	if err != nil {
-		fmt.Println("Error making request:", err)
-		return
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		fmt.Printf("Scan failed with status: %s\n", resp.Status)
-	} else {
-		fmt.Printf("Scan successful with status: %s\n", resp.Status)
-	}
-	body, _ := io.ReadAll(resp.Body)
-	// fmt.Printf("Response body: %s\n", body)
-
-	type Component struct {
-		Key string `json:"key"`
-	}
-
-	type Response struct {
-		Components []Component `json:"components"`
-	}
-
-	var result Response
-	err = json.Unmarshal(body, &result)
-	if err != nil {
-		fmt.Println("Error unmarshaling JSON:", err)
-		return
-	}
-
-	var keys []string
-	for _, component := range result.Components {
-		// fmt.Printf("Project Key: %s\n", component.Key)
-		keys = append(keys, component.Key)
 	}
 
 	for _, key := range keys {
-		deleteURL := fmt.Sprintf("http://localhost:9000/api/projects/delete?project=%s", key)
-		req, err := http.NewRequest("POST", deleteURL, nil)
-		if err != nil {
-			fmt.Printf("Error creating delete request for %s: %v\n", key, err)
-			continue
-		}
-		req.Header.Set("X-XSRF-TOKEN", AuthData.XSRFToken)
-
-		resp, err := client.Do(req)
-		if err != nil {
-			fmt.Printf("Error deleting project %s: %v\n", key, err)
-			continue
-		}
-		resp.Body.Close()
-
-		if resp.StatusCode == http.StatusNoContent || resp.StatusCode == http.StatusOK {
-			fmt.Printf("Deleted project: %s\n", key)
+		if err := api.DeleteProject("http://localhost:9000", key, AuthData); err != nil {
+			fmt.Printf("Failed to delete %s: %v\n", key, err)
 		} else {
-			fmt.Printf("Failed to delete project %s: %s\n", key, resp.Status)
+			fmt.Printf("Deleted project: %s\n", key)
 		}
 	}
 }

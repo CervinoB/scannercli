@@ -15,10 +15,12 @@ import (
 
 // listCmd represents the list command
 var listCmd = &cobra.Command{
-	Use:   "list",
-	Short: "List the todos",
-	Long:  "Listing the todos",
-	Run:   listRun,
+	Use:        "list",
+	Short:      "List the todos",
+	Long:       "Listing the todos",
+	Deprecated: "This command is deprecated and will be removed in future versions. Used only to test and setup project.",
+
+	Run: listRun,
 }
 
 func init() {

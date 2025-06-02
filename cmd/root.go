@@ -5,26 +5,15 @@ package cmd
 
 import (
 	"fmt"
-	"io"
 	"log"
-	"net/http"
-	"net/http/cookiejar"
-	"net/url"
 	"os"
 	"path/filepath"
-	"strings"
 
+	"github.com/CervinoB/scannercli/internal/api"
 	"github.com/spf13/cobra"
 )
 
-var AuthData *AuthResponse
-
-// AuthResponse contains extracted auth cookies
-type AuthResponse struct {
-	XSRFToken  string
-	JWTSession string
-	CookieJar  http.CookieJar
-}
+var AuthData *api.AuthResponse
 
 var dataFile string
 
@@ -41,14 +30,12 @@ valuable insights efficiently.`,
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-		authResp, err := auth()
+		authResp, err := api.Authenticate("http://localhost:9000/api/authentication/login", "admin", "zy3fnVnvKLw4dca!")
 		if err != nil {
 			return fmt.Errorf("auth failed: %w", err)
 		}
-
 		AuthData = authResp
-
-		if err := healthCheck(authResp); err != nil {
+		if err := api.CheckHealth("http://localhost:9000/api/system/health", authResp); err != nil {
 			return fmt.Errorf("health check failed: %w", err)
 		}
 
@@ -84,91 +71,4 @@ func init() {
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
 	// fmt.Println("Using data file:", dataFile)
-}
-
-func auth() (*AuthResponse, error) {
-	loginURL := "http://localhost:9000/api/authentication/login"
-
-	jar, err := cookiejar.New(nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create cookie jar: %w", err)
-	}
-
-	client := &http.Client{
-		Jar: jar,
-	}
-
-	form := url.Values{}
-	form.Set("login", "admin")
-	form.Set("password", "zy3fnVnvKLw4dca!")
-
-	req, err := http.NewRequest("POST", loginURL, io.NopCloser(strings.NewReader(form.Encode())))
-	if err != nil {
-		return nil, fmt.Errorf("failed to create login request: %w", err)
-	}
-
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Set("Accept", "application/json")
-
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, fmt.Errorf("login request failed: %w", err)
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		body, _ := io.ReadAll(resp.Body)
-		return nil, fmt.Errorf("login failed: %s\n%s", resp.Status, string(body))
-	}
-
-	// Extract cookies from the response
-	var xsrfToken, jwtSession string
-	for _, cookie := range jar.Cookies(req.URL) {
-		switch cookie.Name {
-		case "XSRF-TOKEN":
-			xsrfToken = cookie.Value
-		case "JWT-SESSION":
-			jwtSession = cookie.Value
-		}
-	}
-
-	if xsrfToken == "" || jwtSession == "" {
-		return nil, fmt.Errorf("required auth cookies not found")
-	}
-
-	return &AuthResponse{
-		XSRFToken:  xsrfToken,
-		JWTSession: jwtSession,
-		CookieJar:  jar,
-	}, nil
-}
-
-func healthCheck(authResp *AuthResponse) error {
-	client := &http.Client{Jar: authResp.CookieJar}
-
-	req, err := http.NewRequest("GET", "http://localhost:9000/api/system/health", nil)
-	if err != nil {
-		return fmt.Errorf("failed to create request: %w", err)
-	}
-
-	req.Header.Set("User-Agent", "insomnia/10.3.1")
-	req.Header.Set("X-XSRF-TOKEN", authResp.XSRFToken)
-
-	resp, err := client.Do(req)
-	if err != nil {
-		return fmt.Errorf("health check request failed: %w", err)
-	}
-	defer resp.Body.Close()
-
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return fmt.Errorf("failed to read response body: %w", err)
-	}
-
-	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("health check failed: %s\nResponse: %s", resp.Status, body)
-	}
-
-	fmt.Printf("Health check passed: %s\n", body)
-	return nil
 }
