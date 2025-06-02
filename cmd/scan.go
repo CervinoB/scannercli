@@ -5,6 +5,8 @@ package cmd
 
 import (
 	"fmt"
+	"io"
+	"net/http"
 
 	"github.com/spf13/cobra"
 )
@@ -34,4 +36,30 @@ func init() {
 
 func scanRun(cmd *cobra.Command, args []string) {
 	fmt.Println("scan called")
+
+	client := &http.Client{Jar: AuthData.CookieJar}
+
+	req, err := http.NewRequest("GET", "http://localhost:9000/api/projects/search", nil)
+	if err != nil {
+		fmt.Println("Error creating request:", err)
+		return
+	}
+	req.Header.Set("X-XSRF-TOKEN", AuthData.XSRFToken)
+
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println("Error making request:", err)
+		return
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		fmt.Printf("Scan failed with status: %s\n", resp.Status)
+	} else {
+		fmt.Printf("Scan successful with status: %s\n", resp.Status)
+	}
+	body, _ := io.ReadAll(resp.Body)
+	fmt.Printf("Response body: %s\n", body)
+
+	fmt.Println("Scan completed")
 }

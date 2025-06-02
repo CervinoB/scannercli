@@ -40,6 +40,20 @@ valuable insights efficiently.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
+	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+		authResp, err := auth()
+		if err != nil {
+			return fmt.Errorf("auth failed: %w", err)
+		}
+
+		AuthData = authResp
+
+		if err := healthCheck(authResp); err != nil {
+			return fmt.Errorf("health check failed: %w", err)
+		}
+
+		return nil
+	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -70,12 +84,6 @@ func init() {
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
 	fmt.Println("Using data file:", dataFile)
-	authResp, err := auth()
-	if err != nil {
-		log.Fatalf("Authentication failed: %v", err)
-	}
-
-	healthCheck(authResp)
 }
 
 func auth() (*AuthResponse, error) {
@@ -101,9 +109,6 @@ func auth() (*AuthResponse, error) {
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36")
-	req.Header.Set("Origin", "http://localhost:9001")
-	req.Header.Set("Referer", "http://localhost:9001/projects/create?mode=manual&setncd=true")
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -138,12 +143,12 @@ func auth() (*AuthResponse, error) {
 	}, nil
 }
 
-func healthCheck(authResp *AuthResponse) {
+func healthCheck(authResp *AuthResponse) error {
 	client := &http.Client{Jar: authResp.CookieJar}
 
 	req, err := http.NewRequest("GET", "http://localhost:9000/api/system/health", nil)
 	if err != nil {
-		log.Fatalf("Failed to create request: %v", err)
+		return fmt.Errorf("failed to create request: %w", err)
 	}
 
 	req.Header.Set("User-Agent", "insomnia/10.3.1")
@@ -151,18 +156,19 @@ func healthCheck(authResp *AuthResponse) {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Fatalf("Health check request failed: %v", err)
+		return fmt.Errorf("health check request failed: %w", err)
 	}
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatalf("Failed to read response body: %v", err)
+		return fmt.Errorf("failed to read response body: %w", err)
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		log.Fatalf("Health check failed: %s\nResponse: %s", resp.Status, body)
+		return fmt.Errorf("health check failed: %s\nResponse: %s", resp.Status, body)
 	}
 
 	fmt.Printf("Health check passed: %s\n", body)
+	return nil
 }
