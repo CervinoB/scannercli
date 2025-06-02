@@ -83,7 +83,7 @@ func init() {
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
-	fmt.Println("Using data file:", dataFile)
+	// fmt.Println("Using data file:", dataFile)
 }
 
 func auth() (*AuthResponse, error) {

@@ -7,6 +7,9 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
+	"strings"
+	"time"
 
 	"github.com/spf13/cobra"
 )
@@ -60,6 +63,45 @@ func scanRun(cmd *cobra.Command, args []string) {
 	}
 	body, _ := io.ReadAll(resp.Body)
 	fmt.Printf("Response body: %s\n", body)
+	timeStamp := time.Now().Unix()
+
+	if err := createNewProject(client, "new-project-"+fmt.Sprintf("%d", timeStamp)); err != nil {
+		fmt.Printf("Error creating new project: %v\n", err)
+		return
+	}
 
 	fmt.Println("Scan completed")
+}
+
+func createNewProject(client *http.Client, projectName string) error {
+	endpoint := "http://localhost:9000/api/projects/create"
+
+	form := url.Values{}
+	form.Set("creationMode", "manual")
+	form.Set("monorepo", "false")
+	form.Set("project", projectName)
+	form.Set("name", projectName)
+	form.Set("mainBranch", "main")
+
+	req, err := http.NewRequest("POST", endpoint, strings.NewReader(form.Encode()))
+	if err != nil {
+		return fmt.Errorf("failed to create request: %w", err)
+	}
+
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Set("X-XSRF-TOKEN", AuthData.XSRFToken)
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return fmt.Errorf("failed to send project creation request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		body, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("project creation failed: status %d, response: %s", resp.StatusCode, body)
+	}
+
+	fmt.Printf("Project '%s' created successfully\n", projectName)
+	return nil
 }
