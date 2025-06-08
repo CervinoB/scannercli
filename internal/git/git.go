@@ -11,7 +11,14 @@ import (
 func CloneRepository(repoURL, targetDir string) error {
 	// Check if the target directory exists
 	if _, err := os.Stat(targetDir); err == nil {
-		// Directory exists, try to pull latest changes
+		// Directory exists, ensure we are on main branch before pulling
+		checkoutCmd := exec.Command("git", "-C", targetDir, "checkout", "main")
+		checkoutCmd.Stdout = os.Stdout
+		checkoutCmd.Stderr = os.Stderr
+		if err := checkoutCmd.Run(); err != nil {
+			return fmt.Errorf("failed to checkout main branch: %w", err)
+		}
+		// Pull latest changes
 		if err := PullLatestChanges(targetDir); err != nil {
 			return fmt.Errorf("repository exists but failed to pull latest changes: %w", err)
 		}
@@ -28,19 +35,17 @@ func CloneRepository(repoURL, targetDir string) error {
 	return nil
 }
 
-// ListBranches lists all branches in the specified Git repository directory.
-func ListBranches(repoDir string) ([]string, error) {
+// ListTags lists all tags in the specified Git repository directory.
+func ListTags(repoDir string) ([]string, error) {
 
-	cmd := exec.Command("git", "-C", repoDir, "branch", "--list")
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
+	cmd := exec.Command("git", "-C", repoDir, "tag", "--list")
 	output, err := cmd.Output()
 	if err != nil {
-		return nil, fmt.Errorf("failed to list branches: %w", err)
+		return nil, fmt.Errorf("failed to list tags: %w", err)
 	}
 
-	branches := strings.Fields(string(output))
-	return branches, nil
+	tags := strings.Fields(string(output))
+	return tags, nil
 }
 
 // PullLatestChanges pulls the latest changes from the remote repository.

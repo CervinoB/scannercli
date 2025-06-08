@@ -4,8 +4,7 @@ Copyright © 2025 Joao Cervino jcervinobarbosa@gmail.com
 package cmd
 
 import (
-	"fmt"
-	"time"
+	"sort"
 
 	"github.com/CervinoB/scannercli/internal/api"
 	"github.com/CervinoB/scannercli/internal/git"
@@ -41,22 +40,64 @@ func scanRun(cmd *cobra.Command, args []string) {
 	logging.Logger.Println("scan called")
 
 	name := viper.GetString("name")
+	url := viper.GetString("url")
+	sonarHost := viper.GetString("sonarHost")
 
-	timestamp := time.Now().Unix()
-	projectName := fmt.Sprintf("%s%d", name, timestamp)
-
-	err := api.CreateProject("http://localhost:9000", projectName, AuthData)
+	err := api.CreateProject(sonarHost, name, AuthData)
 	if err != nil {
 		logging.Logger.Errorf("Error creating project: %v\n", err)
 		return
 	} else {
-		logging.Logger.Printf("Project created with key: %s\n", projectName)
+		logging.Logger.Printf("Project created with key: %s\n", name)
 	}
 
-	err = git.CloneRepository("https://github.com/twentyhq/twenty.git", repoPath+"/"+name)
+	err = git.CloneRepository(url, repoPath+"/"+name)
 	if err != nil {
 		logging.Logger.Printf("Error cloning repository: %v\n", err)
 		return
+	}
+
+	token, err := api.GenerateAnalysisToken(sonarHost, name, AuthData)
+	if err != nil {
+		logging.Logger.Printf("Error generating analysis token: %v\n", err)
+		return
+	}
+
+	logging.Logger.Printf("Analysis token generated: %s\n", token)
+
+	tagList, err := git.ListTags(repoPath + "/" + name)
+	if err != nil {
+		logging.Logger.Printf("Error listing tags: %v\n", err)
+		return
+	}
+	logging.Logger.Printf("Tags found: %v\n", tagList)
+
+	if len(tagList) > 1 {
+		// Sort tags alphabetically (or by semver if needed)
+		// For now, sort alphabetically
+		sortedTags := make([]string, len(tagList))
+		copy(sortedTags, tagList)
+		// You can use sort.Strings for alphabetical order
+		// import "sort" at the top if not already imported
+		sort.Strings(sortedTags)
+		tagList = sortedTags
+	}
+
+	for _, tag := range tagList {
+		err := git.CheckoutTag(repoPath+"/"+name, tag)
+		if err != nil {
+			logging.Logger.Printf("Error checking out tag %s: %v\n", tag, err)
+			return
+		}
+
+		// projectName := fmt.Sprintf("%s-%s", name, tag)
+		// err = api.CreateProject("http://localhost:9000", projectName, AuthData)
+		// if err != nil {
+		// 	logging.Logger.Errorf("Error creating project: %v\n", err)
+		// 	return
+		// } else {
+		// 	logging.Logger.Printf("Project created with key: %s\n", projectName)
+		// }
 	}
 
 	logging.Logger.Info("Scan completed")
