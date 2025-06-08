@@ -63,15 +63,6 @@ func scanRun(cmd *cobra.Command, args []string) {
 
 	logging.Logger.Printf("Analysis token generated: %s\n", token)
 
-	//TODO: Implement the scanner logic here using the token to run
-	/*
-			sonar-scanner \
-		  -Dsonar.projectKey=twenty \
-		  -Dsonar.sources=. \
-		  -Dsonar.host.url=http://localhost:9000 \
-		  -Dsonar.token=sqp_08d6bd9df2a4365c21a1c8af38c5bfaa0d416558
-	*/
-
 	tagList, err := git.ListTags(repoPath + "/" + name)
 	if err != nil {
 		logging.Logger.Printf("Error listing tags: %v\n", err)
@@ -94,6 +85,21 @@ func scanRun(cmd *cobra.Command, args []string) {
 		err := git.CheckoutTag(repoPath+"/"+name, tag)
 		if err != nil {
 			logging.Logger.Printf("Error checking out tag %s: %v\n", tag, err)
+			return
+		}
+		//TODO: Implement the scanner logic here using the token to run
+		/*
+				sonar-scanner \
+			  -Dsonar.projectKey=twenty \
+			  -Dsonar.sources=. \
+			  -Dsonar.host.url=http://localhost:9000 \
+			  -Dsonar.token=sqp_08d6bd9df2a4365c21a1c8af38c5bfaa0d416558
+		*/
+
+		//exec command
+		err = api.ExecSonarScanner(name, token, sonarHost, repoPath+"/"+name)
+		if err != nil {
+			logging.Logger.Printf("Error running sonar-scanner: %v\n", err)
 			return
 		}
 
