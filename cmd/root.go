@@ -10,12 +10,17 @@ import (
 	"path/filepath"
 
 	"github.com/CervinoB/scannercli/internal/api"
+	"github.com/CervinoB/scannercli/internal/logging"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var AuthData *api.AuthResponse
 
+var repoPath string
 var dataFile string
+var Verbose bool
+var Debug bool
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -30,12 +35,17 @@ valuable insights efficiently.`,
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+		logging.ConfigureLogger(Verbose, Debug)
+		logging.Logger.Debug("Logger initialized")
+
 		authResp, err := api.Authenticate("http://localhost:9000/api/authentication/login", "admin", "zy3fnVnvKLw4dca!")
 		if err != nil {
+			logging.Logger.Errorf("Authentication failed: %v", err)
 			return fmt.Errorf("auth failed: %w", err)
 		}
 		AuthData = authResp
 		if err := api.CheckHealth("http://localhost:9000/api/system/health", authResp); err != nil {
+			logging.Logger.Errorf("Health check failed: %v", err)
 			return fmt.Errorf("health check failed: %w", err)
 		}
 
@@ -59,16 +69,22 @@ func init() {
 
 	cwd, err := os.Getwd()
 	if err != nil {
-		log.Println("Unable to detect current directory. Please set data file using --datafile.")
+		log.Println("Unable to detect current directory. Please set data file using --repoPath.")
 	}
 
-	// Default to ./.tridos.json in the current directory
-	defaultFile := filepath.Join(cwd, ".tridos.json")
-	rootCmd.PersistentFlags().StringVar(&dataFile, "datafile", defaultFile, "data file to store todos")
+	// Default to ./repo/ in the current directory
+	defaultPath := filepath.Join(cwd, "repo/")
+	rootCmd.PersistentFlags().StringVar(&repoPath, "repoPath", defaultPath, "repository path")
+	viper.BindPFlag("repoPath", rootCmd.PersistentFlags().Lookup("repoPath"))
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.PersistentFlags().BoolVarP(&Verbose, "verbose", "v", false, "Display more verbose output in console output. (default: false)")
+	viper.BindPFlag("verbose", rootCmd.PersistentFlags().Lookup("verbose"))
 
-	// fmt.Println("Using data file:", dataFile)
+	rootCmd.PersistentFlags().BoolVarP(&Debug, "debug", "d", false, "Display debugging output in the console. (default: false)")
+	viper.BindPFlag("debug", rootCmd.PersistentFlags().Lookup("debug"))
+
+	fmt.Println("Using repository path:", repoPath)
 }

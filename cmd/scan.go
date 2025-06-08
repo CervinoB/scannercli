@@ -7,9 +7,13 @@ import (
 	"fmt"
 	"time"
 
+	log "github.com/sirupsen/logrus"
+
 	"github.com/CervinoB/scannercli/internal/api"
 	"github.com/CervinoB/scannercli/internal/git"
+	"github.com/CervinoB/scannercli/internal/logging"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // scanCmd represents the scan command
@@ -36,24 +40,30 @@ func init() {
 }
 
 func scanRun(cmd *cobra.Command, args []string) {
-	fmt.Println("scan called")
+	logging.Logger.Println("scan called")
+
+	for key, value := range viper.GetViper().AllSettings() {
+		logging.Logger.WithFields(log.Fields{
+			key: value,
+		}).Info("Command Flag")
+	}
 
 	timestamp := time.Now().Unix()
 	projectName := fmt.Sprintf("new-project-%d", timestamp)
 
 	err := api.CreateProject("http://localhost:9000", projectName, AuthData)
 	if err != nil {
-		fmt.Printf("Error creating project: %v\n", err)
+		logging.Logger.Errorf("Error creating project: %v\n", err)
 		return
 	} else {
-		fmt.Printf("Project created with key: %s\n", projectName)
+		logging.Logger.Printf("Project created with key: %s\n", projectName)
 	}
 
-	err = git.CloneRepository("https://github.com/twentyhq/twenty.git", "repo/"+projectName)
+	err = git.CloneRepository("https://github.com/twentyhq/twenty.git", repoPath+"/"+projectName)
 	if err != nil {
-		fmt.Printf("Error cloning repository: %v\n", err)
+		logging.Logger.Printf("Error cloning repository: %v\n", err)
 		return
 	}
 
-	fmt.Println("Scan completed")
+	logging.Logger.Info("Scan completed")
 }
