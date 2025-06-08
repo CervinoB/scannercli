@@ -7,7 +7,9 @@ import (
 	"fmt"
 
 	"github.com/CervinoB/scannercli/internal/api"
+	"github.com/CervinoB/scannercli/internal/logging"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // deleteCmd represents the delete command
@@ -40,17 +42,11 @@ func init() {
 func deleteRun(cmd *cobra.Command, args []string) {
 	fmt.Println("delete called")
 
-	keys, err := api.ListProjects("http://localhost:9000", AuthData)
-	if err != nil {
-		fmt.Println("Failed to list projects:", err)
-		return
-	}
+	sonarHost := viper.GetString("sonarHost")
 
-	for _, key := range keys {
-		if err := api.DeleteProject("http://localhost:9000", key, AuthData); err != nil {
-			fmt.Printf("Failed to delete %s: %v\n", key, err)
-		} else {
-			fmt.Printf("Deleted project: %s\n", key)
-		}
+	err := api.DeleteAllProjects(sonarHost, AuthData)
+	if err != nil {
+		logging.Logger.Errorf("Error deleting projects: %v\n", err)
+		return
 	}
 }

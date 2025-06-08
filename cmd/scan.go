@@ -39,9 +39,7 @@ func init() {
 func scanRun(cmd *cobra.Command, args []string) {
 	logging.Logger.Println("scan called")
 
-	name := viper.GetString("name")
-	url := viper.GetString("url")
-	sonarHost := viper.GetString("sonarHost")
+	name, url, sonarHost := getConfigValues()
 
 	err := api.CreateProject(sonarHost, name, AuthData)
 	if err != nil {
@@ -64,6 +62,15 @@ func scanRun(cmd *cobra.Command, args []string) {
 	}
 
 	logging.Logger.Printf("Analysis token generated: %s\n", token)
+
+	//TODO: Implement the scanner logic here using the token to run
+	/*
+			sonar-scanner \
+		  -Dsonar.projectKey=twenty \
+		  -Dsonar.sources=. \
+		  -Dsonar.host.url=http://localhost:9000 \
+		  -Dsonar.token=sqp_08d6bd9df2a4365c21a1c8af38c5bfaa0d416558
+	*/
 
 	tagList, err := git.ListTags(repoPath + "/" + name)
 	if err != nil {
@@ -101,4 +108,11 @@ func scanRun(cmd *cobra.Command, args []string) {
 	}
 
 	logging.Logger.Info("Scan completed")
+}
+
+func getConfigValues() (string, string, string) {
+	name := viper.GetString("name")
+	url := viper.GetString("url")
+	sonarHost := viper.GetString("sonarHost")
+	return name, url, sonarHost
 }
