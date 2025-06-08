@@ -35,16 +35,15 @@ valuable insights efficiently.`,
 	// has an action associated with it:
 	// Run: func(cmd *cobra.Command, args []string) { },
 	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-		logging.ConfigureLogger(Verbose, Debug)
-		logging.Logger.Debug("Logger initialized")
+		sonarHost := viper.GetString("sonarHost")
 
-		authResp, err := api.Authenticate("http://localhost:9000/api/authentication/login", "admin", "zy3fnVnvKLw4dca!")
+		authResp, err := api.Authenticate(fmt.Sprintf("%s/api/authentication/login", sonarHost), "admin", "zy3fnVnvKLw4dca!")
 		if err != nil {
 			logging.Logger.Errorf("Authentication failed: %v", err)
 			return fmt.Errorf("auth failed: %w", err)
 		}
 		AuthData = authResp
-		if err := api.CheckHealth("http://localhost:9000/api/system/health", authResp); err != nil {
+		if err := api.CheckHealth(fmt.Sprintf("%s/api/system/health", sonarHost), authResp); err != nil {
 			logging.Logger.Errorf("Health check failed: %v", err)
 			return fmt.Errorf("health check failed: %w", err)
 		}
@@ -67,6 +66,8 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 
+	cobra.OnInitialize(initConfig)
+
 	cwd, err := os.Getwd()
 	if err != nil {
 		log.Println("Unable to detect current directory. Please set data file using --repoPath.")
@@ -87,4 +88,30 @@ func init() {
 	viper.BindPFlag("debug", rootCmd.PersistentFlags().Lookup("debug"))
 
 	fmt.Println("Using repository path:", repoPath)
+}
+
+func initConfig() {
+	logging.ConfigureLogger(Verbose, Debug)
+	logging.Logger.Debug("Logger initialized")
+
+	// Set the config file name and paths to search
+	viper.SetConfigName("scannercli") // name of config file (without extension)
+	viper.SetConfigType("yaml")       // or "json", "toml", etc.
+
+	// Add paths to search for config files
+	viper.AddConfigPath(".") // current directory
+
+	// Read environment variables
+	viper.AutomaticEnv()
+
+	// If a config file is found, read it in
+	if err := viper.ReadInConfig(); err == nil {
+		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
+	}
+
+	for key, value := range viper.GetViper().AllSettings() {
+		logging.Logger.WithFields(map[string]interface{}{
+			key: value,
+		}).Info("Command Flag")
+	}
 }

@@ -7,8 +7,6 @@ import (
 	"fmt"
 	"time"
 
-	log "github.com/sirupsen/logrus"
-
 	"github.com/CervinoB/scannercli/internal/api"
 	"github.com/CervinoB/scannercli/internal/git"
 	"github.com/CervinoB/scannercli/internal/logging"
@@ -42,14 +40,10 @@ func init() {
 func scanRun(cmd *cobra.Command, args []string) {
 	logging.Logger.Println("scan called")
 
-	for key, value := range viper.GetViper().AllSettings() {
-		logging.Logger.WithFields(log.Fields{
-			key: value,
-		}).Info("Command Flag")
-	}
+	name := viper.GetString("name")
 
 	timestamp := time.Now().Unix()
-	projectName := fmt.Sprintf("new-project-%d", timestamp)
+	projectName := fmt.Sprintf("%s%d", name, timestamp)
 
 	err := api.CreateProject("http://localhost:9000", projectName, AuthData)
 	if err != nil {
@@ -59,7 +53,7 @@ func scanRun(cmd *cobra.Command, args []string) {
 		logging.Logger.Printf("Project created with key: %s\n", projectName)
 	}
 
-	err = git.CloneRepository("https://github.com/twentyhq/twenty.git", repoPath+"/"+projectName)
+	err = git.CloneRepository("https://github.com/twentyhq/twenty.git", repoPath+"/"+name)
 	if err != nil {
 		logging.Logger.Printf("Error cloning repository: %v\n", err)
 		return
