@@ -9,7 +9,16 @@ import (
 
 // CloneRepository clones a Git repository from the given URL into the specified target directory.
 func CloneRepository(repoURL, targetDir string) error {
+	// Check if the target directory exists
+	if _, err := os.Stat(targetDir); err == nil {
+		// Directory exists, try to pull latest changes
+		if err := PullLatestChanges(targetDir); err != nil {
+			return fmt.Errorf("repository exists but failed to pull latest changes: %w", err)
+		}
+		return nil
+	}
 
+	// Directory does not exist, clone the repository
 	cmd := exec.Command("git", "clone", repoURL, targetDir)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
