@@ -31,3 +31,24 @@ func TestCloneRepository(t *testing.T) {
 		}
 	}
 }
+
+func TestPullLatestChanges(t *testing.T) {
+	// This is a placeholder for the actual test implementation.
+	// In a real test, you would set up a mock repository or use a test repository URL.
+	repoDir := "repo/twenty"
+
+	// Clean up repoDir before running the test
+	if err := os.RemoveAll(repoDir); err != nil {
+		t.Fatalf("Failed to remove repoDir before test: %v", err)
+	}
+
+	err := CloneRepository("https://github.com/twentyhq/twenty.git", repoDir)
+	if err != nil {
+		t.Fatalf("TestPullLatestChanges failed: %v", err)
+	}
+
+	err = PullLatestChanges(repoDir)
+	if err != nil {
+		t.Fatalf("TestPullLatestChanges failed: %v", err)
+	}
+}
