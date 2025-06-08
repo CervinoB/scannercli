@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/CervinoB/scannercli/internal/api"
+	"github.com/CervinoB/scannercli/internal/git"
 	"github.com/spf13/cobra"
 )
 
@@ -40,9 +41,19 @@ func scanRun(cmd *cobra.Command, args []string) {
 	timestamp := time.Now().Unix()
 	projectName := fmt.Sprintf("new-project-%d", timestamp)
 
-	if err := api.CreateProject("http://localhost:9000", projectName, AuthData); err != nil {
+	err := api.CreateProject("http://localhost:9000", projectName, AuthData)
+	if err != nil {
 		fmt.Printf("Error creating project: %v\n", err)
 		return
+	} else {
+		fmt.Printf("Project created with key: %s\n", projectName)
 	}
+
+	err = git.CloneRepository("https://github.com/twentyhq/twenty.git", "repo/"+projectName)
+	if err != nil {
+		fmt.Printf("Error cloning repository: %v\n", err)
+		return
+	}
+
 	fmt.Println("Scan completed")
 }
