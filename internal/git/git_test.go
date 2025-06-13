@@ -16,7 +16,7 @@ func TestCloneRepository(t *testing.T) {
 		t.Fatalf("Failed to remove targetDir before test: %v", err)
 	}
 
-	err := CloneRepository(repoURL, targetDir)
+	err := CloneRepository(repoURL, targetDir, true)
 	if err != nil {
 		t.Fatalf("TestCloneRepository failed: %v", err)
 	}
@@ -42,12 +42,12 @@ func TestPullLatestChanges(t *testing.T) {
 		t.Fatalf("Failed to remove repoDir before test: %v", err)
 	}
 
-	err := CloneRepository("https://github.com/twentyhq/twenty.git", repoDir)
+	err := CloneRepository("https://github.com/twentyhq/twenty.git", repoDir, true)
 	if err != nil {
 		t.Fatalf("TestPullLatestChanges failed: %v", err)
 	}
 
-	err = PullLatestChanges(repoDir)
+	err = PullLatestChanges(repoDir, true)
 	if err != nil {
 		t.Fatalf("TestPullLatestChanges failed: %v", err)
 	}

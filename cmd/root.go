@@ -81,13 +81,13 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	rootCmd.PersistentFlags().BoolVarP(&Verbose, "verbose", "v", false, "Display more verbose output in console output. (default: false)")
+	rootCmd.PersistentFlags().BoolVarP(&Verbose, "verbose", "v", true, "Display more verbose output in console output. (default: true)")
 	viper.BindPFlag("verbose", rootCmd.PersistentFlags().Lookup("verbose"))
 
 	rootCmd.PersistentFlags().BoolVarP(&Debug, "debug", "d", false, "Display debugging output in the console. (default: false)")
 	viper.BindPFlag("debug", rootCmd.PersistentFlags().Lookup("debug"))
 
-	fmt.Println("Using repository path:", repoPath)
+	logging.Logger.Infof("Using repository path: %s", repoPath)
 }
 
 func initConfig() {
@@ -106,7 +106,7 @@ func initConfig() {
 
 	// If a config file is found, read it in
 	if err := viper.ReadInConfig(); err == nil {
-		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
+		logging.Logger.Infof("Using config file: %s", viper.ConfigFileUsed())
 	}
 
 	for key, value := range viper.GetViper().AllSettings() {

@@ -1,4 +1,4 @@
-name: twenty
+name: twenty-aux
 url: https://github.com/twentyhq/twenty.git
 nestPath: packages/twenty-server
 scanner: sonarqube
