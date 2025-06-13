@@ -2,9 +2,11 @@ package api
 
 import (
 	"bytes"
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"time"
 
 	"github.com/CervinoB/scannercli/internal/logging"
 )
@@ -19,8 +21,6 @@ func ExecSonarScanner(projectKey, token, sonarHost, sourcePath string, debug boo
 	)
 
 	cmd.Dir = filepath.Clean(sourcePath)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
 
 	if debug {
 		logging.Logger.Debugf("Running sonar-scanner in %s with command: %s", sourcePath, cmd.String())
@@ -38,5 +38,26 @@ func ExecSonarScanner(projectKey, token, sonarHost, sourcePath string, debug boo
 
 	logging.Logger.Printf("Running sonar-scanner in %s", sourcePath)
 
-	return cmd.Run()
+	done := make(chan struct{})
+	go func() {
+		chars := []rune{'|', '/', '-', '\\'}
+		i := 0
+		for {
+			select {
+			case <-done:
+				fmt.Print("\r") // Clear loader
+				return
+			default:
+				fmt.Printf("\rScanning... %c", chars[i%len(chars)])
+				time.Sleep(200 * time.Millisecond)
+				i++
+			}
+		}
+	}()
+
+	err := cmd.Run()
+	close(done)
+	fmt.Print("\r")
+
+	return err
 }
