@@ -168,3 +168,9 @@ func GenerateAnalysisToken(baseURL, key string, auth *AuthResponse) (string, err
 
 	return result.Token, nil
 }
+
+func GetAnalysisResults(baseURL, key string, auth *AuthResponse) (string, error) {
+	logging.Logger.Warnf("Fetching analysis results for project key: %s", key)
+
+	return "", nil
+}

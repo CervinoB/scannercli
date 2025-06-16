@@ -5,11 +5,11 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 	"os"
-	"text/tabwriter"
 
-	"github.com/CervinoB/scannercli/internal/todo"
+	"github.com/CervinoB/scannercli/internal/api"
+	"github.com/CervinoB/scannercli/internal/export"
+	"github.com/CervinoB/scannercli/internal/logging"
 	"github.com/spf13/cobra"
 )
 
@@ -40,20 +40,45 @@ func init() {
 func listRun(cmd *cobra.Command, args []string) {
 	fmt.Println("list called")
 
-	items, err := todo.ReadItems(dataFile)
-	if err != nil {
-		log.Printf("Error reading items: %v", err)
-		return
-	}
-	if len(items) == 0 {
-		fmt.Println("No items found in the file.")
-		return
-	}
-	// fmt.Printf("Items: %+v\n", items)
+	name, _, sonarHost := getConfigValues()
 
-	w := tabwriter.NewWriter(os.Stdout, 3, 0, 1, ' ', 0)
-	for _, i := range items {
-		fmt.Println(i.PrettyPrint() + "\t" + i.Text + "\t")
+	Issues, err := api.ReadIssues(name, sonarHost, AuthData)
+	if err != nil {
+		logging.Logger.Errorf("Error reading issues: %v\n", err)
+		return
 	}
-	w.Flush()
+	logging.Logger.Infof("Issues found: %d\n", len(Issues))
+
+	// write to CSV file
+	if len(Issues) == 0 {
+		logging.Logger.Info("No issues found.")
+		return
+	}
+	csvData, err := export.ExportCSV(Issues)
+	if err != nil {
+		logging.Logger.Errorf("Error exporting issues to CSV: %v\n", err)
+		return
+	}
+	logging.Logger.Infof("CSV data generated successfully:\n%s\n", csvData)
+
+	os.WriteFile("issues.csv", []byte(csvData), 0644)
+	logging.Logger.Info("CSV file written successfully: issues.csv")
+
+	// api.PrettyPrint
+	// items, err := todo.ReadItems(dataFile)
+	// if err != nil {
+	// 	log.Printf("Error reading items: %v", err)
+	// 	return
+	// }
+	// if len(items) == 0 {
+	// 	fmt.Println("No items found in the file.")
+	// 	return
+	// }
+	// // fmt.Printf("Items: %+v\n", items)
+
+	// w := tabwriter.NewWriter(os.Stdout, 3, 0, 1, ' ', 0)
+	// for _, i := range items {
+	// 	fmt.Println(i.PrettyPrint() + "\t" + i.Text + "\t")
+	// }
+	// w.Flush()
 }
