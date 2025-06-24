@@ -7,7 +7,7 @@
       "request": "launch",
       "mode": "auto",
       "program": "main.go",
-      "args": ["list"] // Replace with the command you want to debug
+      "args": ["scan"]
     }
   ]
 }

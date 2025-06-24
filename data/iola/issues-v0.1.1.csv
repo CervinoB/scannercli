@@ -1,0 +1,6 @@
+Component,Line,Severity,Type,Message,Effort,Author,SoftwareQuality
+iola:src/core/common/util/message.util.ts,45,MINOR,CODE_SMELL,Handle this exception or don't catch it at all.,1h,varentsovpavel@gmail.com,MAINTAINABILITY
+iola:src/core/socket/client/websocket.client.ts,144,MINOR,CODE_SMELL,Handle this exception or don't catch it at all.,1h,varentsovpavel@gmail.com,MAINTAINABILITY
+iola:src/core/socket/client/websocket.client.ts,164,MAJOR,BUG,Promise executor functions should not be async.,5min,varentsovpavel@gmail.com,RELIABILITY
+iola:src/core/socket/client/websocket.client.ts,181,MAJOR,CODE_SMELL,Expected the Promise rejection reason to be an Error.,5min,varentsovpavel@gmail.com,RELIABILITY
+iola:src/core/socket/client/websocket.client.ts,210,MINOR,CODE_SMELL,Handle this exception or don't catch it at all.,1h,varentsovpavel@gmail.com,MAINTAINABILITY

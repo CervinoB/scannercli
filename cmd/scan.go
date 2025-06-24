@@ -4,9 +4,11 @@ Copyright © 2025 Joao Cervino jcervinobarbosa@gmail.com
 package cmd
 
 import (
+	"os"
 	"sort"
 
 	"github.com/CervinoB/scannercli/internal/api"
+	"github.com/CervinoB/scannercli/internal/export"
 	"github.com/CervinoB/scannercli/internal/git"
 	"github.com/CervinoB/scannercli/internal/logging"
 	"github.com/spf13/cobra"
@@ -90,20 +92,25 @@ func scanRun(cmd *cobra.Command, args []string) {
 		  -Dsonar.token=sqp_08d6bd9df2a4365c21a1c8af38c5bfaa0d416558
 	*/
 
-	//exec command
-	err = api.ExecSonarScanner(name, token, sonarHost, repoPath+"/"+name, Debug)
-	if err != nil {
-		logging.Logger.Printf("Error running sonar-scanner: %v\n", err)
-		return
+	for _, tag := range tagList {
+		err := git.CheckoutTag(repoPath+"/"+name, tag, Debug)
+		if err != nil {
+			logging.Logger.Printf("Error checking out tag %s: %v\n", tag, err)
+			return
+		}
+		//exec command
+		err = api.ExecSonarScanner(name, token, sonarHost, repoPath+"/"+name, Debug)
+		if err != nil {
+			logging.Logger.Printf("Error running sonar-scanner: %v\n", err)
+			return
+		}
+		logging.Logger.Printf("Sonar scan completed for tag: %s\n", tag)
+		err = exportAllIssues(name, tag, sonarHost)
+		if err != nil {
+			logging.Logger.Printf("Error exporting issues for tag %s: %v\n", tag, err)
+			// return
+		}
 	}
-
-	// for _, tag := range tagList {
-	// 	err := git.CheckoutTag(repoPath+"/"+name, tag)
-	// 	if err != nil {
-	// 		logging.Logger.Printf("Error checking out tag %s: %v\n", tag, err)
-	// 		return
-	// 	}
-	// }
 
 	logging.Logger.Info("Scan completed")
 }
@@ -134,4 +141,35 @@ func getConfigValues() (string, string, string) {
 	url := viper.GetString("url")
 	sonarHost := viper.GetString("sonarHost")
 	return name, url, sonarHost
+}
+
+func exportAllIssues(name, version, sonarHost string) error {
+	Issues, err := api.ReadAllIssues(name, sonarHost, AuthData)
+	if err != nil {
+		logging.Logger.Errorf("Error reading issues: %v\n", err)
+		// return err
+	}
+	logging.Logger.Infof("Issues found: %d\n", len(Issues))
+
+	// write to CSV file
+	if len(Issues) == 0 {
+		logging.Logger.Info("No issues found.")
+		return nil
+	}
+	csvData, err := export.ExportCSV(Issues)
+	if err != nil {
+		logging.Logger.Errorf("Error exporting issues to CSV: %v\n", err)
+		return err
+	}
+	logging.Logger.Infof("CSV data generated successfully:\n%s\n", csvData)
+
+	// path := "./data/" + name + "/issues.csv"
+
+	os.MkdirAll("./data/"+name, 0755) // Ensure the directory exists
+	if err := os.WriteFile("./data/"+name+"/issues-"+version+".csv", []byte(csvData), 0644); err != nil {
+		logging.Logger.Errorf("Error writing CSV file: %v\n", err)
+		return err
+	}
+	logging.Logger.Infof("CSV file written successfully: ./data/%s/issues-%s.csv\n", name, version)
+	return nil
 }

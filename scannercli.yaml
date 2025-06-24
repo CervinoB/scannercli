@@ -1,6 +1,8 @@
-name: twenty-aux
-url: https://github.com/twentyhq/twenty.git
-nestPath: packages/twenty-server
+name: toolkit
+url: https://github.com/necordjs/toolkit.git
+nestPath:
 scanner: sonarqube
 sonarHost: http://localhost:9000
 FF_CLEANUP: true
+
+# git tag -l | sort -V

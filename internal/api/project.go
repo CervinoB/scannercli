@@ -62,7 +62,7 @@ func CreateProject(baseURL, name string, auth *AuthResponse) error {
 	form.Set("monorepo", "false")
 	form.Set("project", name)
 	form.Set("name", name)
-	form.Set("mainBranch", "main")
+	form.Set("mainBranch", "develop")
 
 	req, err := http.NewRequest("POST", endpoint, strings.NewReader(form.Encode()))
 	if err != nil {

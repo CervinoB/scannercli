@@ -41,11 +41,13 @@ func listRun(cmd *cobra.Command, args []string) {
 	fmt.Println("list called")
 
 	name, _, sonarHost := getConfigValues()
+	version := "v0.1.0"
 
-	Issues, err := api.ReadIssues(name, sonarHost, AuthData)
+	// Issues, err := api.ReadIssues(name, sonarHost, AuthData)
+	Issues, err := api.ReadAllIssues(name, sonarHost, AuthData)
 	if err != nil {
 		logging.Logger.Errorf("Error reading issues: %v\n", err)
-		return
+		// return
 	}
 	logging.Logger.Infof("Issues found: %d\n", len(Issues))
 
@@ -61,24 +63,12 @@ func listRun(cmd *cobra.Command, args []string) {
 	}
 	logging.Logger.Infof("CSV data generated successfully:\n%s\n", csvData)
 
-	os.WriteFile("issues.csv", []byte(csvData), 0644)
-	logging.Logger.Info("CSV file written successfully: issues.csv")
+	// path := "./data/" + name + "/issues.csv"
 
-	// api.PrettyPrint
-	// items, err := todo.ReadItems(dataFile)
-	// if err != nil {
-	// 	log.Printf("Error reading items: %v", err)
-	// 	return
-	// }
-	// if len(items) == 0 {
-	// 	fmt.Println("No items found in the file.")
-	// 	return
-	// }
-	// // fmt.Printf("Items: %+v\n", items)
-
-	// w := tabwriter.NewWriter(os.Stdout, 3, 0, 1, ' ', 0)
-	// for _, i := range items {
-	// 	fmt.Println(i.PrettyPrint() + "\t" + i.Text + "\t")
-	// }
-	// w.Flush()
+	os.MkdirAll("./data/"+name, 0755) // Ensure the directory exists
+	if err := os.WriteFile("./data/"+name+"/issues-"+version+".csv", []byte(csvData), 0644); err != nil {
+		logging.Logger.Errorf("Error writing CSV file: %v\n", err)
+		return
+	}
+	logging.Logger.Infof("CSV file written successfully: ./data/%s/issues-%s.csv\n", name, version)
 }

@@ -63,3 +63,58 @@ func ReadIssues(projectKey, baseUrl string, auth *AuthResponse) ([]Issue, error)
 	}
 	return result.Issues, nil
 }
+
+func ReadAllIssues(projectKey, baseUrl string, auth *AuthResponse) ([]Issue, error) {
+	// This function reads all issues for a project, handling pagination.
+	var allIssues []Issue
+	pageSize := 500
+	page := 1
+
+	for {
+		issues, err := ReadIssuesWithPagination(projectKey, baseUrl, auth, page, pageSize)
+		if err != nil {
+			return allIssues, err
+		}
+		if len(issues) == 0 {
+			break // No more issues to read
+		}
+		allIssues = append(allIssues, issues...)
+		page++
+	}
+
+	return allIssues, nil
+}
+
+// ReadIssuesWithPagination reads issues for a project with pagination support.
+func ReadIssuesWithPagination(projectKey, baseUrl string, auth *AuthResponse, page, pageSize int) ([]Issue, error) {
+	client := &http.Client{Jar: auth.CookieJar}
+	parameters := url.Values{}
+	parameters.Add("components", projectKey)
+	parameters.Add("s", "FILE_LINE")
+	parameters.Add("issueStatuses", "CONFIRMED,OPEN")
+	parameters.Add("additionalFields", "_all")
+	parameters.Add("ps", fmt.Sprintf("%d", pageSize))
+	parameters.Add("p", fmt.Sprintf("%d", page))
+
+	req, err := http.NewRequest("GET", baseUrl+"/api/issues/search?"+parameters.Encode(), nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Set("X-XSRF-TOKEN", auth.XSRFToken)
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("unexpected status code: %s", resp.Status)
+	}
+	var result struct {
+		Issues []Issue `json:"issues"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return nil, err
+	}
+	return result.Issues, nil
+}

@@ -1,0 +1,189 @@
+Component,Line,Severity,Type,Message,Effort,Author,SoftwareQuality
+vendure:docs/assets/styles/_landing-page.scss,170,MAJOR,CODE_SMELL,Unexpected empty block,1min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:docs/assets/styles/_markdown.scss,119,MAJOR,CODE_SMELL,Remove this commented out code.,5min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:docs/assets/styles/_shortcodes.scss,49,MAJOR,CODE_SMELL,Unexpected empty block,1min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:docs/assets/styles/_toc.scss,33,MAJOR,CODE_SMELL,Remove this commented out code.,5min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:docs/assets/styles/_top-bar.scss,176,MAJOR,CODE_SMELL,Remove this commented out code.,5min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:docs/assets/styles/intro/_cube.scss,64,MAJOR,CODE_SMELL,"Unexpected duplicate selector "".cube"", first used at line 4",1min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:docs/assets/styles/intro/_data-flow.scss,9,CRITICAL,BUG,"Unexpected shorthand ""background"" after ""background-color""",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/assets/styles/intro/_storefront.scss,34,MAJOR,BUG,"Unexpected duplicate ""padding""",1min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/assets/styles/intro/_storefront.scss,48,CRITICAL,BUG,"Unexpected shorthand ""background"" after ""background-color""",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/assets/styles/intro/intro.scss,35,MAJOR,CODE_SMELL,Remove this commented out code.,5min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:docs/assets/styles/intro/intro.scss,121,MINOR,CODE_SMELL,Unexpected extra semicolon,2min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:docs/assets/styles/intro/intro.scss,502,MINOR,CODE_SMELL,Unexpected extra semicolon,2min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:docs/assets/styles/intro/intro.scss,511,MINOR,CODE_SMELL,Unexpected extra semicolon,2min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:docs/assets/styles/main.scss,48,MAJOR,CODE_SMELL,Remove this commented out code.,5min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:docs/layouts/404.html,3,MAJOR,BUG,"Add ""lang"" and/or ""xml:lang"" attributes to this ""<html>"" element",2min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/404.html,5,MAJOR,BUG,Add a <title> tag to this page.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/article/baseof.html,3,MAJOR,BUG,"Add ""lang"" and/or ""xml:lang"" attributes to this ""<html>"" element",2min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/article/baseof.html,5,MAJOR,BUG,Add a <title> tag to this page.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/blog/baseof.html,3,MAJOR,BUG,"Add ""lang"" and/or ""xml:lang"" attributes to this ""<html>"" element",2min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/blog/baseof.html,5,MAJOR,BUG,Add a <title> tag to this page.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/docs/baseof.html,3,MAJOR,BUG,"Add ""lang"" and/or ""xml:lang"" attributes to this ""<html>"" element",2min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/docs/baseof.html,5,MAJOR,BUG,Add a <title> tag to this page.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/index.en.html,3,MAJOR,BUG,Add a <title> tag to this page.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/index.en.html,64,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/index.en.html,67,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/index.en.html,70,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/index.en.html,73,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/index.en.html,91,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/index.en.html,107,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/index.en.html,122,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/index.en.html,137,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/index.en.html,176,MAJOR,CODE_SMELL,"Remove this deprecated ""frameborder"" attribute.",5min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:docs/layouts/index.en.html,184,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/partials/breadcrumbs.html,12,MINOR,BUG,Surround this <li> item tag by a <ul> or <ol> container one.,10min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/partials/docs/git-footer.html,6,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/partials/docs/git-footer.html,13,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/partials/docs/menu-filetree.html,17,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/partials/docs/mobile-header.html,2,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/partials/docs/mobile-header.html,3,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/partials/footer.html,43,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/partials/graphql-playground.html,1,MAJOR,CODE_SMELL,Remove this commented out code.,5min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:docs/layouts/partials/intro.html,40,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/partials/intro.html,76,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/partials/intro.html,92,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/partials/top-bar.html,5,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:docs/layouts/partials/top-bar.html,14,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/apply-facet-dialog/apply-facet-dialog.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty source,1min,,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/assign-products-to-channel-dialog/assign-products-to-channel-dialog.component.html,5,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/assign-products-to-channel-dialog/assign-products-to-channel-dialog.component.html,15,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/assign-products-to-channel-dialog/assign-products-to-channel-dialog.component.html,21,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/collection-detail/collection-detail.component.html,47,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/collection-detail/collection-detail.component.html,68,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/collection-detail/collection-detail.component.html,89,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/collection-list/collection-list.component.html,5,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/collection-tree/collection-tree-node.component.scss,13,MAJOR,BUG,"Unexpected duplicate ""transition""",1min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/collection-tree/collection-tree.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty source,1min,,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/facet-detail/facet-detail.component.html,46,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/facet-detail/facet-detail.component.html,75,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/facet-detail/facet-detail.component.html,88,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/generate-product-variants/generate-product-variants.component.html,3,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/generate-product-variants/generate-product-variants.component.html,14,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/option-value-input/option-value-input.component.html,1,MINOR,BUG,Add a 'onKeyPress|onKeyDown|onKeyUp' attribute to this <div> tag.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/product-assets/product-assets.component.html,4,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/product-assets/product-assets.component.html,4,MINOR,BUG,Add a 'onKeyPress|onKeyDown|onKeyUp' attribute to this <img> tag.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/product-assets/product-assets.component.html,26,MINOR,BUG,Add a 'onKeyPress|onKeyDown|onKeyUp' attribute to this <img> tag.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/product-assets/product-assets.component.html,26,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/product-assets/product-assets.component.html,63,MAJOR,CODE_SMELL,"""tabIndex"" should only be declared on interactive elements.",5min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/product-assets/product-assets.component.html,70,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/product-assets/product-assets.component.scss,27,MAJOR,BUG,"Unexpected duplicate ""padding""",1min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/product-detail/product-detail.component.html,12,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/product-detail/product-detail.component.html,114,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/product-list/product-list.component.html,28,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/product-list/product-list.component.html,51,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/product-search-input/product-search-input.component.html,13,MINOR,BUG,Add a 'onKeyPress|onKeyDown|onKeyUp' attribute to this <div> tag.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/product-variants-editor/product-variants-editor.component.html,15,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/product-variants-editor/product-variants-editor.component.html,24,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/product-variants-list/product-variants-list.component.html,36,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/product-variants-list/product-variants-list.component.html,55,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/product-variants-list/product-variants-list.component.html,66,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/product-variants-list/product-variants-list.component.html,74,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/product-variants-list/product-variants-list.component.html,92,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/product-variants-list/product-variants-list.component.html,111,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/product-variants-list/product-variants-list.component.html,118,MAJOR,CODE_SMELL,Remove this commented out code.,5min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/product-variants-table/product-variants-table.component.html,16,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/update-product-option-dialog/update-product-option-dialog.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty source,1min,,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/catalog/src/components/variant-price-detail/variant-price-detail.component.html,1,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/core/src/components/app-shell/app-shell.component.html,4,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/core/src/components/main-nav/main-nav.component.scss,4,MAJOR,CODE_SMELL,Remove this commented out code.,5min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/core/src/components/ui-language-switcher-dialog/ui-language-switcher-dialog.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty block,1min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/action-bar-items/action-bar-items.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty source,1min,,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/asset-gallery/asset-gallery.component.html,2,MINOR,BUG,Add a 'onKeyPress|onKeyDown|onKeyUp' attribute to this <div> tag.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/asset-gallery/asset-gallery.component.html,10,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/asset-gallery/asset-gallery.component.html,13,MINOR,BUG,Add a 'onKeyPress|onKeyDown|onKeyUp' attribute to this <vdr-entity-info> tag.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/asset-gallery/asset-gallery.component.html,29,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/asset-preview/asset-preview.component.html,11,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/asset-preview/asset-preview.component.html,28,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/asset-preview/asset-preview.component.html,85,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/channel-assignment-control/channel-assignment-control.component.html,16,MINOR,BUG,Add a 'onKeyPress|onKeyDown|onKeyUp' attribute to this <span> tag.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/configurable-input/configurable-input.component.html,6,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/datetime-picker/datetime-picker.component.html,74,MAJOR,BUG,"Add ""<th>"" headers to this ""<table>"".",2min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/datetime-picker/datetime-picker.component.html,74,MAJOR,CODE_SMELL,"""tabIndex"" should only be declared on interactive elements.",5min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/dropdown/dropdown.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty source,1min,,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/extension-host/extension-host.component.html,2,MINOR,BUG,"Add a ""title"" attribute to this <iframe> tag.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/form-field/form-field.component.html,15,MAJOR,CODE_SMELL,The attribute aria-haspopup is not supported by the role tooltip.,5min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/form-field/form-field.component.scss,73,CRITICAL,BUG,"Unexpected unknown type selector ""element""",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/form-field/form-field.component.scss,73,MAJOR,CODE_SMELL,Unexpected empty block,1min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/form-item/form-item.component.html,2,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/items-per-page-controls/items-per-page-controls.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty source,1min,,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/language-selector/language-selector.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty source,1min,,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/object-tree/object-tree.component.scss,3,MAJOR,CODE_SMELL,Unexpected empty block,1min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/object-tree/object-tree.component.scss,27,MAJOR,CODE_SMELL,Remove this commented out code.,5min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/rich-text-editor/external-image-dialog/external-image-dialog.component.html,4,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/rich-text-editor/external-image-dialog/external-image-dialog.component.html,8,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/rich-text-editor/external-image-dialog/external-image-dialog.component.html,12,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/rich-text-editor/external-image-dialog/external-image-dialog.component.html,17,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/rich-text-editor/link-dialog/link-dialog.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty source,1min,,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/rich-text-editor/prosemirror/prosemirror.scss,6,MAJOR,CODE_SMELL,"Unexpected duplicate selector ""::ng-deep .ProseMirror"", first used at line 2",1min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/rich-text-editor/prosemirror/prosemirror.scss,160,MAJOR,CODE_SMELL,"Unexpected duplicate selector ""::ng-deep .ProseMirror-menu-active"", first used at line 155",1min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/rich-text-editor/prosemirror/prosemirror.scss,329,MAJOR,CODE_SMELL,"Unexpected duplicate selector ""::ng-deep .ProseMirror"", first used at line 2",1min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/rich-text-editor/rich-text-editor.component.html,1,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/core/src/shared/components/simple-dialog/simple-dialog.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty source,1min,,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/customer/src/components/address-card/address-card.component.html,23,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/customer/src/components/address-card/address-card.component.html,27,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/customer/src/components/address-card/address-card.component.html,31,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/customer/src/components/address-card/address-card.component.html,35,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/customer/src/components/address-card/address-card.component.html,39,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/customer/src/components/address-card/address-card.component.html,43,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/customer/src/components/address-card/address-card.component.html,47,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/customer/src/components/address-card/address-card.component.html,55,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/customer/src/components/customer-detail/customer-detail.component.html,61,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/customer/src/components/customer-detail/customer-detail.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty source,1min,,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/login/src/components/login/login.component.html,3,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/login/src/components/login/login.component.html,3,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/login/src/components/login/login.component.html,29,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/marketing/src/components/promotion-detail/promotion-detail.component.html,7,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/marketing/src/components/promotion-detail/promotion-detail.component.html,71,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/marketing/src/components/promotion-detail/promotion-detail.component.html,104,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/marketing/src/components/promotion-detail/promotion-detail.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty source,1min,,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/marketing/src/components/promotion-list/promotion-list.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty source,1min,,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/order/src/components/cancel-order-dialog/cancel-order-dialog.component.html,22,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/order/src/components/cancel-order-dialog/cancel-order-dialog.component.html,44,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/order/src/components/fulfill-order-dialog/fulfill-order-dialog.component.html,21,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/order/src/components/fulfill-order-dialog/fulfill-order-dialog.component.html,44,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/order/src/components/fulfill-order-dialog/fulfill-order-dialog.component.html,48,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/order/src/components/line-fulfillment/line-fulfillment.component.html,16,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/order/src/components/line-fulfillment/line-fulfillment.component.html,19,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/order/src/components/line-fulfillment/line-fulfillment.component.html,24,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/order/src/components/order-detail/order-detail.component.html,90,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/order/src/components/order-history/order-history.component.html,19,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/order/src/components/order-history/order-history.component.scss,105,MAJOR,CODE_SMELL,Unexpected empty block,1min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/order/src/components/refund-order-dialog/refund-order-dialog.component.html,19,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/order/src/components/refund-order-dialog/refund-order-dialog.component.html,54,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/order/src/components/refund-order-dialog/refund-order-dialog.component.html,66,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/order/src/components/refund-order-dialog/refund-order-dialog.component.html,81,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/order/src/components/refund-order-dialog/refund-order-dialog.component.html,88,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/order/src/components/settle-refund-dialog/settle-refund-dialog.component.html,6,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/add-country-to-zone-dialog/add-country-to-zone-dialog.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty source,1min,,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/admin-detail/admin-detail.component.html,64,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/admin-detail/admin-detail.component.html,74,MAJOR,CODE_SMELL,Non-interactive elements should not be assigned interactive roles.,5min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/admin-detail/admin-detail.component.html,75,MAJOR,CODE_SMELL,Use <img> instead of the presentation role to ensure accessibility across all devices.,5min,michael@michaelbromley.co.uk,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/admin-detail/admin-detail.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty source,1min,,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/administrator-list/administrator-list.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty source,1min,,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/channel-list/channel-list.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty source,1min,,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/country-detail/country-detail.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty source,1min,,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/global-settings/global-settings.component.html,26,MINOR,BUG,Add a 'onKeyPress|onKeyDown|onKeyUp' attribute to this <span> tag.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/global-settings/global-settings.component.html,44,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/global-settings/global-settings.component.html,47,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/payment-method-detail/payment-method-detail.component.html,51,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/payment-method-detail/payment-method-detail.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty source,1min,,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/payment-method-list/payment-method-list.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty source,1min,,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/permission-grid/permission-grid.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty source,1min,,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/role-detail/role-detail.component.html,56,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/role-detail/role-detail.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty source,1min,,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/shipping-method-detail/shipping-method-detail.component.html,45,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/shipping-method-detail/shipping-method-detail.component.html,75,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/tax-category-detail/tax-category-detail.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty source,1min,,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/tax-category-list/tax-category-list.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty source,1min,,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/tax-rate-detail/tax-rate-detail.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty source,1min,,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/tax-rate-list/tax-rate-list.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty source,1min,,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/test-address-form/test-address-form.component.html,8,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/test-address-form/test-address-form.component.html,12,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/test-address-form/test-address-form.component.html,16,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/test-address-form/test-address-form.component.html,20,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/test-order-builder/test-order-builder.component.html,18,MINOR,CODE_SMELL,"Add an ""alt"" attribute to this image.",5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/zone-detail-dialog/zone-detail-dialog.component.scss,1,MAJOR,CODE_SMELL,Unexpected empty source,1min,,MAINTAINABILITY
+vendure:packages/admin-ui/src/lib/settings/src/components/zone-list/zone-list.component.html,12,MAJOR,BUG,"Add ""<th>"" headers to this ""<table>"".",2min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/system/src/components/job-list/job-list.component.html,6,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
+vendure:packages/admin-ui/src/lib/system/src/components/job-list/job-list.component.html,16,MAJOR,CODE_SMELL,A form label must be associated with a control.,5min,michael@michaelbromley.co.uk,RELIABILITY
