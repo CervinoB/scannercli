@@ -1,0 +1,3 @@
+Component,Line,Severity,Type,Message,Effort,Author,SoftwareQuality
+iola:src/api/http/fastify/http.router.ts,68,MINOR,CODE_SMELL,Use a regular expression literal instead of the 'RegExp' constructor.,1min,varentsovpavel@gmail.com,MAINTAINABILITY
+iola:src/core/common/util/message.util.ts,43,MINOR,CODE_SMELL,Handle this exception or don't catch it at all.,1h,varentsovpavel@gmail.com,MAINTAINABILITY

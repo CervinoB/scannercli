@@ -1,0 +1,26 @@
+[
+  {
+    "text": "add priorities",
+    "priority": 2
+  },
+  {
+    "text": "order by priority",
+    "priority": 2
+  },
+  {
+    "text": "help",
+    "priority": 2
+  },
+  {
+    "text": "test1",
+    "priority": 2
+  },
+  {
+    "text": "test1",
+    "priority": 1
+  },
+  {
+    "text": "test1",
+    "priority": 3
+  }
+]

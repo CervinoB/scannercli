@@ -1,0 +1,7 @@
+Component,Line,Severity,Type,Message,Effort,Author,SoftwareQuality
+iola:src/api/http/fastify/http.schema.ts,10,MAJOR,BUG,"Do not use ""Error"" to declare a variable - use another name.",10min,varentsovpavel@gmail.com,RELIABILITY
+iola:src/core/common/util/message.util.ts,45,MINOR,CODE_SMELL,Handle this exception or don't catch it at all.,1h,varentsovpavel@gmail.com,MAINTAINABILITY
+iola:src/core/socket/client/websocket.client.ts,144,MINOR,CODE_SMELL,Handle this exception or don't catch it at all.,1h,varentsovpavel@gmail.com,MAINTAINABILITY
+iola:src/core/socket/client/websocket.client.ts,161,MAJOR,BUG,Promise executor functions should not be async.,5min,varentsovpavel@gmail.com,RELIABILITY
+iola:src/core/socket/client/websocket.client.ts,178,MAJOR,CODE_SMELL,Expected the Promise rejection reason to be an Error.,5min,varentsovpavel@gmail.com,RELIABILITY
+iola:src/core/socket/client/websocket.client.ts,207,MINOR,CODE_SMELL,Handle this exception or don't catch it at all.,1h,varentsovpavel@gmail.com,MAINTAINABILITY

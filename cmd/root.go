@@ -4,92 +4,114 @@ Copyright © 2025 Joao Cervino jcervinobarbosa@gmail.com
 package cmd
 
 import (
-	"github.com/sirupsen/logrus"
+	"fmt"
+	"log"
+	"os"
+	"path/filepath"
+
+	"github.com/CervinoB/scannercli/internal/api"
+	"github.com/CervinoB/scannercli/internal/logging"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
-type rootCommand struct {
-	cfgFile string
-	debug   bool
-	docker  bool
-	cmd     *cobra.Command
-	Logger  *logrus.Logger
+var AuthData *api.AuthResponse
+
+var repoPath string
+var dataFile string
+var Verbose bool
+var Debug bool
+
+// rootCmd represents the base command when called without any subcommands
+var rootCmd = &cobra.Command{
+	Use:   "scannercli",
+	Short: "A CLI tool to scan repositories and gather metrics",
+	Long: `ScannerCLI is a command-line tool designed to scan repositories and
+retrieve metrics for each commit, tag, and hash using the desired scanner.
+
+This tool helps developers and teams analyze repository history and extract
+valuable insights efficiently.`,
+	// Uncomment the following line if your bare application
+	// has an action associated with it:
+	// Run: func(cmd *cobra.Command, args []string) { },
+	PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
+		sonarHost := viper.GetString("sonarHost")
+
+		authResp, err := api.Authenticate(fmt.Sprintf("%s/api/authentication/login", sonarHost), "admin", "zy3fnVnvKLw4dca!")
+		if err != nil {
+			logging.Logger.Errorf("Authentication failed: %v", err)
+			return fmt.Errorf("auth failed: %w", err)
+		}
+		AuthData = authResp
+		if err := api.CheckHealth(fmt.Sprintf("%s/api/system/health", sonarHost), authResp); err != nil {
+			logging.Logger.Errorf("Health check failed: %v", err)
+			return fmt.Errorf("health check failed: %w", err)
+		}
+
+		return nil
+	},
 }
 
-func newRootCommand(lg *logrus.Logger) *rootCommand {
-	c := &rootCommand{
-		Logger: lg,
-	}
-
-	// the base command when called without any subcommands.
-	rootCmd := &cobra.Command{
-		Use:   "sonarcli",
-		Short: "a next-generation load generator",
-		Long: `SonarCLI facilita a análise de código estático utilizando o SonarScanner e 
-	a coleta de métricas de code smell ao longo do tempo.
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-		// SilenceUsage:      true,
-		// SilenceErrors:     true,
-		PersistentPreRunE: c.persistentPreRunE,
-		// Version:           versionString(),
-	}
-
-	rootCmd.SetVersionTemplate(
-		`{{with .Name}}{{printf "%s " .}}{{end}}{{printf "v%s\n" .Version}}`,
-	)
-	rootCmd.PersistentFlags().StringVar(&c.cfgFile, "config", "", "config file (default is $HOME/.sonarcli.yaml)")
-	rootCmd.PersistentFlags().BoolVar(&c.debug, "debug", false, "enable debug mode")
-	rootCmd.PersistentFlags().BoolVar(&c.docker, "docker", false, "run scanners in docker containers")
-
-	c.cmd = rootCmd
-	return c
-}
-func (c *rootCommand) persistentPreRunE(_ *cobra.Command, _ []string) error {
-	err := c.initLogger(c.Logger)
-	if err != nil {
-		return err
-	}
-	c.globalState.Logger.Debugf("k6 version: v%s", fullVersion())
-	return nil
-}
-
+// Execute adds all child commands to the root command and sets flags appropriately.
+// This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
-	cobra.CheckErr(c.rootCmd.Execute())
+	err := rootCmd.Execute()
+	if err != nil {
+		os.Exit(1)
+	}
 }
 
 func init() {
-}
+	// Here you will define your flags and configuration settings.
+	// Cobra supports persistent flags, which, if defined here,
+	// will be global for your application.
 
-func (c *rootCommand) initLogger() error {
+	cobra.OnInitialize(initConfig)
 
-	log.SetFormatter(&logrus.TextFormatter{
-		FullTimestamp: true,
-	})
-
-	if c.debug {
-		logrus.SetLevel(logrus.DebugLevel)
-		logrus.Debug("Debug mode enabled")
-	}
-}
-
-func (c *rootCommand) initConfig() error {
-	if c.debug {
-		c.Logger.SetLevel(logrus.DebugLevel)
+	cwd, err := os.Getwd()
+	if err != nil {
+		log.Println("Unable to detect current directory. Please set data file using --repoPath.")
 	}
 
-	// if cfgFile != "" {
-	// 	viper.SetConfigFile(cfgFile)
-	// } else {
-	// 	viper.AddConfigPath(".")
-	// 	viper.SetConfigName(".sonarcli")
-	// }
+	// Default to ./repo/ in the current directory
+	defaultPath := filepath.Join(cwd, "repo/")
+	rootCmd.PersistentFlags().StringVar(&repoPath, "repoPath", defaultPath, "repository path")
+	viper.BindPFlag("repoPath", rootCmd.PersistentFlags().Lookup("repoPath"))
 
-	// viper.AutomaticEnv()
+	// Cobra also supports local flags, which will only run
+	// when this action is called directly.
+	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	rootCmd.PersistentFlags().BoolVarP(&Verbose, "verbose", "v", true, "Display more verbose output in console output. (default: true)")
+	viper.BindPFlag("verbose", rootCmd.PersistentFlags().Lookup("verbose"))
 
-	// if err := viper.ReadInConfig(); err == nil {
-	// 	logrus.Info("Using config file:", viper.ConfigFileUsed())
-	// }
+	rootCmd.PersistentFlags().BoolVarP(&Debug, "debug", "d", false, "Display debugging output in the console. (default: false)")
+	viper.BindPFlag("debug", rootCmd.PersistentFlags().Lookup("debug"))
+
+	logging.Logger.Infof("Using repository path: %s", repoPath)
+}
+
+func initConfig() {
+	logging.ConfigureLogger(Verbose, Debug)
+	logging.Logger.Debug("Logger initialized")
+
+	// Set the config file name and paths to search
+	viper.SetConfigName("scannercli") // name of config file (without extension)
+	viper.SetConfigType("yaml")       // or "json", "toml", etc.
+
+	// Add paths to search for config files
+	viper.AddConfigPath(".") // current directory
+
+	// Read environment variables
+	viper.AutomaticEnv()
+
+	// If a config file is found, read it in
+	if err := viper.ReadInConfig(); err == nil {
+		logging.Logger.Infof("Using config file: %s", viper.ConfigFileUsed())
+	}
+
+	for key, value := range viper.GetViper().AllSettings() {
+		logging.Logger.WithFields(map[string]interface{}{
+			key: value,
+		}).Info("Command Flag")
+	}
 }

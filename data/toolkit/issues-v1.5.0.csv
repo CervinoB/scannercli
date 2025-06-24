@@ -1,0 +1,15 @@
+Component,Line,Severity,Type,Message,Effort,Author,SoftwareQuality
+toolkit:src/app.constants.ts,6,MINOR,CODE_SMELL,This assertion is unnecessary since it does not change the type of the expression.,1min,socket.someone@gmail.com,MAINTAINABILITY
+toolkit:src/changelog/changelog.controller.ts,5,MINOR,CODE_SMELL,Remove this unused import of 'map'.,1min,socket.someone@gmail.com,MAINTAINABILITY
+toolkit:src/common/interceptors/command-metrics.interceptor.ts,4,MINOR,CODE_SMELL,Remove this unused import of 'SlashCommandDiscovery'.,1min,socket.someone@gmail.com,MAINTAINABILITY
+toolkit:src/docs/docs.service.ts,39,MINOR,CODE_SMELL,Handle this exception or don't catch it at all.,1h,socket.someone@gmail.com,MAINTAINABILITY
+toolkit:src/docs/docs.service.ts,65,MINOR,CODE_SMELL,Handle this exception or don't catch it at all.,1h,socket.someone@gmail.com,MAINTAINABILITY
+toolkit:src/docs/docs.service.ts,77,MINOR,CODE_SMELL,"Prefer using nullish coalescing operator (`??`) instead of a logical or (`||`), as it is a safer operator.",5min,socket.someone@gmail.com,MAINTAINABILITY
+toolkit:src/docs/docs.service.ts,84,MINOR,CODE_SMELL,Handle this exception or don't catch it at all.,1h,socket.someone@gmail.com,MAINTAINABILITY
+toolkit:src/docs/interfaces/algolia.interface.ts,44,MAJOR,CODE_SMELL,Refactor this code to not use nested template literals.,10min,socket.someone@gmail.com,MAINTAINABILITY
+toolkit:src/docs/interfaces/discordjs.interface.ts,23,MINOR,CODE_SMELL,"Replace this ""switch"" statement by ""if"" statements to increase readability.",5min,socket.someone@gmail.com,MAINTAINABILITY
+toolkit:src/docs/services/discord-js.service.ts,20,MAJOR,CODE_SMELL,Replace this alternation with a character class.,5min,socket.someone@gmail.com,MAINTAINABILITY
+toolkit:src/docs/services/mdn.service.ts,33,MAJOR,CODE_SMELL,Replace this alternation with a character class.,5min,socket.someone@gmail.com,MAINTAINABILITY
+toolkit:src/docs/services/mdn.service.ts,47,MAJOR,CODE_SMELL,"Move this array ""sort"" operation to a separate statement or replace it with ""toSorted"".",5min,socket.someone@gmail.com,MAINTAINABILITY
+toolkit:src/general/general.commands.ts,39,MAJOR,CODE_SMELL,Refactor this code to not use nested template literals.,10min,socket.someone@gmail.com,MAINTAINABILITY
+toolkit:src/instrument.ts,8,MINOR,CODE_SMELL,Remove this unused import of 'DetectedResourceAttributes'.,1min,socket.someone@gmail.com,MAINTAINABILITY
